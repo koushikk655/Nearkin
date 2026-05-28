@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"no tests yet\" && exit 0"
+    "test": "echo \"no tests yet\" && exit 0",
+    "verify:prod-strip": "bash scripts/verify-prod-strip.sh"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.6",

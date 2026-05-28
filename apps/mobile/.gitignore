@@ -7,6 +7,9 @@ dist/
 web-build/
 expo-env.d.ts
 
+# Production bundle output (verify:prod-strip)
+.bundle-prod/
+
 # Native
 *.orig.*
 *.jks

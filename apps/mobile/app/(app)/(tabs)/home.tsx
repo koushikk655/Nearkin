@@ -106,7 +106,7 @@ export default function DiscoverScreen() {
           {city ? `NEARFOLD · ${city.toUpperCase()}` : 'NEARFOLD'}
         </Text>
         <Text style={[theme.type.h2, { color: theme.colors.text, marginTop: 2 }]}>
-          What’s near you.
+          Makers near you.
         </Text>
         <View style={{ marginTop: theme.spacing.md }}>
           <SearchBar onDebouncedChange={setSearch} />

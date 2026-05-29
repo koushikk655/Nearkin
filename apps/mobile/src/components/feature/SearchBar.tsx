@@ -14,7 +14,7 @@ export interface SearchBarProps {
 }
 
 export function SearchBar({
-  placeholder = 'Search makers, dishes, shops…',
+  placeholder = 'Search makers, bakes, crafts…',
   onDebouncedChange,
   debounceMs = 350,
 }: SearchBarProps) {

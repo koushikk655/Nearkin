@@ -17,7 +17,7 @@ import { CartBar, EmptyState, ProductCard, Rating, Skeleton } from '../../../src
 import { sellersApi } from '../../../src/api/sellers';
 import { productsApi } from '../../../src/api/products';
 import { queryKeys } from '../../../src/lib/queryKeys';
-import { formatEta, formatPaise, formatTime } from '../../../src/lib/format';
+import { formatPaise, formatTime } from '../../../src/lib/format';
 import { useCart, useAddToCartWithConflict } from '../../../src/hooks/useCart';
 import type { BusinessHour, Product } from '../../../src/api/types';
 
@@ -126,7 +126,7 @@ export default function ShopScreen() {
             ) : null}
 
             <View style={[styles.infoStrip, { borderColor: theme.colors.border, marginTop: theme.spacing.md }]}>
-              <Info icon="time-outline" label={formatEta(seller.avgDeliveryMinutes)} theme={theme} />
+              <Info icon="navigate-outline" label={`Within ${seller.deliveryRadiusKm} km`} theme={theme} />
               <InfoDivider theme={theme} />
               <Info icon="bag-handle-outline" label={seller.minOrderAmount > 0 ? `Min ${formatPaise(seller.minOrderAmount)}` : 'No minimum'} theme={theme} />
               <InfoDivider theme={theme} />

@@ -1,19 +1,18 @@
 /**
- * Dev seed — Guwahati.
+ * Dev seed — Guwahati makers.
  *
- * Inserts a handful of approved, open sellers (with products + business
- * hours) clustered within ~2 km of central Guwahati so the mobile
- * Discover feed has something to show. Run after migrations:
+ * Nearfold is a hyperlocal *makers'* marketplace — home bakers, preserve-
+ * makers, weavers, candle/soap makers. NOT food delivery. So the seed is
+ * artisans with varied lead times: pickles ready in a couple hours, a
+ * custom cake "made to order, 2 days", a handwoven stole "5 days".
  *
+ * Run after migrations:
  *   pnpm --filter @nearfold/api db:seed
  *
- * Idempotent: every row uses a deterministic UUID (sha1 of a stable name),
- * so re-running does nothing rather than duplicating. The PostGIS
- * shop_location column is filled automatically by the
- * seller_profiles_sync_location trigger from shop_lat/shop_lng.
- *
+ * Idempotent (deterministic UUIDs). The PostGIS shop_location column is
+ * filled by the seller_profiles_sync_location trigger from shop_lat/lng.
  * In the iOS Simulator set Features → Location → Custom Location to
- * 26.1445, 91.7362 so these sellers fall inside delivery range.
+ * 26.1445, 91.7362 so these makers fall inside delivery range.
  */
 
 import { createHash } from 'node:crypto';
@@ -36,7 +35,7 @@ function detUuid(name: string): string {
 }
 
 /** Stable placeholder image (Lorem Picsum always resolves). Swap for real
- *  Cloudinary URLs once sellers upload. */
+ *  Cloudinary URLs once makers upload their own photos. */
 function img(seed: string): string {
   return `https://picsum.photos/seed/nf-${seed}/800/800`;
 }
@@ -47,7 +46,7 @@ interface SeedProduct {
   description: string;
   price: number; // paise
   isCustomOrder?: boolean;
-  leadTimeHours?: number;
+  leadTimeHours?: number; // minutes→hours→days; drives the "ready in / made to order" label
 }
 
 interface SeedSeller {
@@ -67,81 +66,99 @@ interface SeedSeller {
 
 const SELLERS: SeedSeller[] = [
   {
-    slug: 'bharali-tiffins',
-    shopName: 'Bharali Tiffins',
-    shopDescription: 'Home-style Assamese thalis, cooked fresh and delivered hot. Run by Mamoni from her Zoo Road kitchen.',
-    category: 'Tiffin',
+    slug: 'ritus-bake-studio',
+    shopName: "Ritu's Bake Studio",
+    shopDescription: 'Custom cakes and small-batch bakes from a home oven in Silpukhuri. Most things are made to order — tell Ritu the occasion.',
+    category: 'Bakes',
     lat: 26.1488,
     lng: 91.7405,
-    address: 'Zoo Road Tiniali, Guwahati',
-    minOrderAmount: 9000,
-    avgDeliveryMinutes: 45,
-    rating: '4.7',
-    totalOrders: 212,
+    address: 'Silpukhuri, Guwahati',
+    minOrderAmount: 30000,
+    avgDeliveryMinutes: 120,
+    rating: '4.8',
+    totalOrders: 96,
     products: [
-      { slug: 'veg-thali', name: 'Assamese Veg Thali', description: 'Rice, dal, aloo pitika, bhaji, khar, and tomato tenga.', price: 12000 },
-      { slug: 'fish-meal', name: 'Masor Tenga Meal', description: 'Tangy fish curry with rice and seasonal greens.', price: 19000 },
-      { slug: 'dal-bhat', name: 'Dal Bhat Combo', description: 'Comfort plate — dal, rice, aloo bhaji, pickle.', price: 9000 },
-      { slug: 'khar-rice', name: 'Khar & Rice', description: 'Traditional Assamese khar with raw papaya and rice.', price: 11000 },
-      { slug: 'egg-curry-meal', name: 'Egg Curry Meal', description: 'Double-egg curry, rice, and dal.', price: 13000 },
+      { slug: 'celebration-cake', name: 'Custom Celebration Cake (½ kg)', description: 'Eggless, your theme and flavour. Buttercream or fresh cream. Tell us the occasion.', price: 120000, isCustomOrder: true, leadTimeHours: 48 },
+      { slug: 'banana-loaf', name: 'Banana Walnut Loaf', description: 'Baked fresh each morning. Whole loaf, no preservatives.', price: 35000, leadTimeHours: 4 },
+      { slug: 'brownie-box', name: 'Fudge Brownie Box (9)', description: 'Dense, dark, sea-salt finish.', price: 45000, isCustomOrder: true, leadTimeHours: 8 },
+      { slug: 'tea-cake', name: 'Cardamom Tea Cake', description: 'Everyday loaf, lightly spiced. Good with chai.', price: 26000, leadTimeHours: 4 },
+      { slug: 'sourdough', name: 'Naturally Leavened Sourdough', description: '48-hour ferment, crackly crust. Baked to order.', price: 30000, isCustomOrder: true, leadTimeHours: 24 },
     ],
   },
   {
-    slug: 'annapurna-bakes',
-    shopName: 'Maa Annapurna Bakes',
-    shopDescription: 'A tiny home bakery in Silpukhuri. Everything baked the morning you order it.',
-    category: 'Bakery',
+    slug: 'kakoli-pickle-pantry',
+    shopName: "Kakoli's Pickle Pantry",
+    shopDescription: 'Small-batch Assamese pickles and preserves, made the old way. Jars are ready on the shelf.',
+    category: 'Pickles',
     lat: 26.1402,
     lng: 91.7320,
-    address: 'Silpukhuri, Guwahati',
-    minOrderAmount: 6000,
-    avgDeliveryMinutes: 60,
-    rating: '4.5',
-    totalOrders: 138,
-    products: [
-      { slug: 'pineapple-pastry', name: 'Pineapple Pastry', description: 'Soft sponge, fresh cream, pineapple compote.', price: 6000 },
-      { slug: 'cream-bun', name: 'Cream Bun (2 pc)', description: 'Old-school cream-filled buns.', price: 5000 },
-      { slug: 'veg-patties', name: 'Veg Patties (2 pc)', description: 'Flaky puff pastry with spiced veg filling.', price: 4000 },
-      { slug: 'brownie', name: 'Chocolate Brownie', description: 'Fudgy, dark, single-origin cocoa.', price: 8000 },
-      { slug: 'coconut-cookies', name: 'Coconut Cookies 250g', description: 'Buttery coconut cookies, baked to order.', price: 15000, isCustomOrder: true, leadTimeHours: 6 },
-    ],
-  },
-  {
-    slug: 'kamakhya-pickles',
-    shopName: 'Kamakhya Pickles',
-    shopDescription: 'Small-batch Northeast pickles. Made by the Das family in Dispur.',
-    category: 'Pickle',
-    lat: 26.1505,
-    lng: 91.7290,
-    address: 'Dispur Last Gate, Guwahati',
+    address: 'Uzan Bazar, Guwahati',
     minOrderAmount: 0,
     avgDeliveryMinutes: 90,
-    rating: '4.8',
-    totalOrders: 304,
+    rating: '4.9',
+    totalOrders: 280,
     products: [
-      { slug: 'bamboo-pickle', name: 'Bamboo Shoot Pickle 200g', description: 'Khorisa — fermented bamboo shoot, slow and tangy.', price: 22000 },
-      { slug: 'bhut-jolokia', name: 'Bhut Jolokia Pickle 100g', description: 'Ghost-pepper pickle. Handle with respect.', price: 25000 },
-      { slug: 'mango-pickle', name: 'Mango Pickle 250g', description: 'Sun-cured raw mango in mustard oil.', price: 18000 },
-      { slug: 'mixed-veg-pickle', name: 'Mixed Veg Pickle 250g', description: 'Carrot, chilli, lime, and gourd.', price: 17000 },
+      { slug: 'bamboo-shoot', name: 'Bamboo Shoot Pickle 200g', description: 'Khorisa — slow-fermented, tangy, deeply local.', price: 22000, leadTimeHours: 2 },
+      { slug: 'bhut-jolokia', name: 'Bhut Jolokia Pickle 100g', description: 'Ghost-pepper pickle. Handle with respect.', price: 25000, leadTimeHours: 2 },
+      { slug: 'fruit-preserve', name: 'Mixed Fruit Preserve 250g', description: 'Seasonal fruit, low sugar, no pectin.', price: 19000, leadTimeHours: 2 },
+      { slug: 'aam-chutney', name: 'Aam Chutney 250g', description: 'Sweet-sour raw-mango chutney, sun-cooked.', price: 16000, leadTimeHours: 2 },
     ],
   },
   {
-    slug: 'mishti-rituparna',
-    shopName: 'Mishti by Rituparna',
-    shopDescription: 'Bengali-Assamese sweets and pithas, made to order for festivals and everyday cravings.',
-    category: 'Sweets',
+    slug: 'loom-thread-mou',
+    shopName: 'Loom & Thread by Mou',
+    shopDescription: 'Handwoven textiles and handmade accessories from a Chandmari home studio. Bigger pieces are woven to order.',
+    category: 'Crafts',
+    lat: 26.1505,
+    lng: 91.7290,
+    address: 'Chandmari, Guwahati',
+    minOrderAmount: 0,
+    avgDeliveryMinutes: 180,
+    rating: '4.7',
+    totalOrders: 64,
+    products: [
+      { slug: 'gamosa', name: 'Handwoven Cotton Gamosa', description: 'Traditional red-and-white, pure handloom cotton.', price: 35000, leadTimeHours: 6 },
+      { slug: 'eri-stole', name: 'Eri Silk Stole', description: 'Handspun eri silk, woven to order in your colour.', price: 240000, isCustomOrder: true, leadTimeHours: 120 },
+      { slug: 'bamboo-tote', name: 'Handwoven Bamboo Tote', description: 'Sturdy, cotton-lined, made in small batches.', price: 60000, isCustomOrder: true, leadTimeHours: 24 },
+      { slug: 'jhumka', name: 'Beaded Jhumka Earrings', description: 'Glass beads, hand-strung, feather-light.', price: 28000, leadTimeHours: 4 },
+    ],
+  },
+  {
+    slug: 'glow-co-candles',
+    shopName: 'Glow Co. Candles',
+    shopDescription: 'Hand-poured soy candles and cold-process soaps. Made in a Zoo Road kitchen, ready to gift.',
+    category: 'Candles',
     lat: 26.1378,
     lng: 91.7448,
-    address: 'Ganeshguri, Guwahati',
-    minOrderAmount: 15000,
+    address: 'Zoo Road, Guwahati',
+    minOrderAmount: 0,
     avgDeliveryMinutes: 120,
     rating: '4.6',
-    totalOrders: 167,
+    totalOrders: 142,
     products: [
-      { slug: 'sandesh', name: 'Sandesh (6 pc)', description: 'Delicate chhena sweet, lightly cardamomed.', price: 18000 },
-      { slug: 'rosogolla', name: 'Rosogolla (1 kg)', description: 'Spongy, syrup-soaked classic.', price: 32000 },
-      { slug: 'til-pitha', name: 'Til Pitha (8 pc)', description: 'Rice-flour rolls with sesame and jaggery. Made to order.', price: 16000, isCustomOrder: true, leadTimeHours: 24 },
-      { slug: 'kheer-kadam', name: 'Kheer Kadam (6 pc)', description: 'Rosogolla wrapped in khoya and mawa.', price: 24000 },
+      { slug: 'lemongrass-candle', name: 'Lemongrass Soy Candle', description: '40-hour burn, cotton wick, amber jar.', price: 45000, leadTimeHours: 3 },
+      { slug: 'neem-soap', name: 'Neem & Tulsi Soap', description: 'Cold-process bar, good for oily skin.', price: 15000, leadTimeHours: 3 },
+      { slug: 'candle-gift-set', name: 'Candle Gift Set of 3', description: 'Three scents, boxed and ribboned. Made to order.', price: 90000, isCustomOrder: true, leadTimeHours: 24 },
+      { slug: 'beeswax-wraps', name: 'Beeswax Food Wraps (3)', description: 'Plastic-free kitchen swap, three sizes.', price: 35000, leadTimeHours: 6 },
+    ],
+  },
+  {
+    slug: 'anu-festive-sweets',
+    shopName: "Anu's Festive Sweets",
+    shopDescription: 'Festive and everyday Assamese sweets, made to order for the people who miss home.',
+    category: 'Sweets',
+    lat: 26.1452,
+    lng: 91.7310,
+    address: 'Latasil, Guwahati',
+    minOrderAmount: 15000,
+    avgDeliveryMinutes: 150,
+    rating: '4.7',
+    totalOrders: 118,
+    products: [
+      { slug: 'til-pitha', name: 'Til Pitha (10 pc)', description: 'Rice-flour rolls with sesame and jaggery. Made to order.', price: 26000, isCustomOrder: true, leadTimeHours: 24 },
+      { slug: 'narikol-laru', name: 'Narikol Laru (12 pc)', description: 'Coconut-jaggery ladoos, rolled by hand.', price: 22000, leadTimeHours: 6 },
+      { slug: 'sandesh', name: 'Sandesh (6 pc)', description: 'Soft chhena sweet, lightly cardamomed.', price: 20000, isCustomOrder: true, leadTimeHours: 12 },
+      { slug: 'payokh', name: 'Payokh Jar (500 ml)', description: 'Assamese rice kheer, slow-cooked.', price: 18000, leadTimeHours: 6 },
     ],
   },
 ];
@@ -154,7 +171,6 @@ async function main(): Promise<void> {
     const userId = detUuid(`user:${s.slug}`);
     const sellerId = detUuid(`seller:${s.slug}`);
 
-    // 1. Seller user (phone is unique → onConflictDoNothing keeps re-runs safe)
     await db
       .insert(users)
       .values({
@@ -168,7 +184,6 @@ async function main(): Promise<void> {
       })
       .onConflictDoNothing();
 
-    // 2. Seller profile (trigger fills shop_location from shop_lat/shop_lng)
     await db
       .insert(sellerProfiles)
       .values({
@@ -191,7 +206,6 @@ async function main(): Promise<void> {
       })
       .onConflictDoNothing();
 
-    // 3. Business hours — open every day 08:00–21:00
     await db
       .insert(sellerBusinessHours)
       .values(
@@ -199,14 +213,13 @@ async function main(): Promise<void> {
           id: detUuid(`hours:${s.slug}:${day}`),
           sellerId,
           dayOfWeek: day,
-          openTime: '08:00',
-          closeTime: '21:00',
+          openTime: '09:00',
+          closeTime: '20:00',
           isClosed: false,
         })),
       )
       .onConflictDoNothing();
 
-    // 4. Products
     await db
       .insert(products)
       .values(
@@ -221,7 +234,7 @@ async function main(): Promise<void> {
           stockQuantity: 999,
           isAvailable: true,
           isCustomOrder: p.isCustomOrder ?? false,
-          leadTimeHours: p.leadTimeHours ?? 2,
+          leadTimeHours: p.leadTimeHours ?? 4,
         })),
       )
       .onConflictDoNothing();
@@ -232,7 +245,7 @@ async function main(): Promise<void> {
 
   // eslint-disable-next-line no-console
   console.log(
-    `\n✅ Seeded ${sellerCount} sellers / ${productCount} products in Guwahati.\n` +
+    `\n✅ Seeded ${sellerCount} makers / ${productCount} products in Guwahati.\n` +
       `   Set the iOS Simulator location to ${CENTER.lat}, ${CENTER.lng}\n` +
       `   (Features → Location → Custom Location) so they appear in range.\n`,
   );

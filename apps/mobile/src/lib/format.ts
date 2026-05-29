@@ -39,11 +39,27 @@ export function formatRating(rating: number): string {
   return rating.toFixed(1);
 }
 
-/** "in ~2 hr" / "in ~45 min" from avgDeliveryMinutes. */
+/** "in ~2 hr" / "in ~45 min" from avgDeliveryMinutes. (Legacy — most
+ *  surfaces now lead with lead time, not delivery ETA.) */
 export function formatEta(minutes: number): string {
   if (minutes < 60) return `~${minutes} min`;
   const hr = minutes / 60;
   return Number.isInteger(hr) ? `~${hr} hr` : `~${hr.toFixed(1)} hr`;
+}
+
+/**
+ * Fulfillment lead time for a maker's item, from leadTimeHours.
+ * Nearfold is a makers' marketplace — things are made/prepped to order, so
+ * we frame time as "when it'll be ready", not a delivery countdown.
+ *   <1h   → "ready within the hour"
+ *   <24h  → "ready in ~3h"
+ *   ≥24h  → "made to order · 2 days"
+ */
+export function formatLeadTime(hours: number): string {
+  if (!hours || hours <= 1) return 'ready within the hour';
+  if (hours < 24) return `ready in ~${Math.round(hours)}h`;
+  const days = Math.round(hours / 24);
+  return `made to order · ${days} day${days === 1 ? '' : 's'}`;
 }
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

@@ -7,17 +7,18 @@ import { ScrollView } from 'react-native';
 import { useTheme } from '../../theme/useTheme';
 import { Chip } from '../Chip';
 
-// Canonical hyperlocal categories for Tier-2 launch. Mirrors the seller
-// onboarding category list; keep in sync with backend seed data.
+// Maker categories for a hyperlocal artisan marketplace — home bakers,
+// preserve-makers, crafts, candle/soap makers, etc. NOT a food-delivery
+// taxonomy. Keep in sync with the seller category values used in the seed.
 export const CATEGORIES = [
-  'Tiffin',
-  'Bakery',
-  'Snacks',
-  'Pickle',
-  'Sweets',
-  'Homemade',
-  'Groceries',
+  'Bakes',
+  'Pickles',
   'Crafts',
+  'Candles',
+  'Sweets',
+  'Decor',
+  'Gifts',
+  'Snacks',
 ] as const;
 
 export interface CategoryChipsProps {

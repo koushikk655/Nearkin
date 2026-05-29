@@ -12,7 +12,7 @@ import { Image } from 'expo-image';
 import { useTheme } from '../../theme/useTheme';
 import { Card } from '../Card';
 import { Rating } from '../Rating';
-import { formatDistance, formatEta, formatPaise } from '../../lib/format';
+import { formatDistance, formatPaise } from '../../lib/format';
 import type { NearbySeller } from '../../api/types';
 
 // Tiny blurhash so the image area never flashes a hard rectangle.
@@ -76,8 +76,6 @@ export const SellerCard = memo(function SellerCard({ seller, onPress }: SellerCa
 
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: theme.spacing.xs, flexWrap: 'wrap' }}>
             <Meta text={formatDistance(seller.distanceMeters)} />
-            <Dot />
-            <Meta text={formatEta(seller.avgDeliveryMinutes)} />
             {seller.minOrderAmount > 0 ? (
               <>
                 <Dot />

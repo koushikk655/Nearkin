@@ -28,6 +28,7 @@ import { useTheme } from '../../../src/theme/useTheme';
 import { Button, EmptyState, Price, Skeleton, QuantityStepper } from '../../../src/components';
 import { productsApi } from '../../../src/api/products';
 import { queryKeys } from '../../../src/lib/queryKeys';
+import { formatLeadTime } from '../../../src/lib/format';
 import {
   useCartItemQty,
   useAddToCartWithConflict,
@@ -180,13 +181,11 @@ export default function ProductScreen() {
               <Text style={[theme.type.h2, { color: theme.colors.text }]}>{product.name}</Text>
               <Price paise={product.price} size="lg" style={{ marginTop: theme.spacing.xs }} />
 
-              {product.isCustomOrder ? (
-                <View style={[styles.tag, { backgroundColor: theme.colors.accentMuted, marginTop: theme.spacing.sm }]}>
-                  <Text style={[theme.type.labelSm, { color: theme.colors.accent }]}>
-                    Made to order · ~{product.leadTimeHours ?? 2} hr
-                  </Text>
-                </View>
-              ) : null}
+              <View style={[styles.tag, { backgroundColor: theme.colors.accentMuted, marginTop: theme.spacing.sm }]}>
+                <Text style={[theme.type.labelSm, { color: theme.colors.accent }]}>
+                  {product.isCustomOrder ? '✦ ' : ''}{formatLeadTime(product.leadTimeHours ?? 2)}
+                </Text>
+              </View>
 
               {product.description ? (
                 <Text style={[theme.type.body, { color: theme.colors.textSecondary, marginTop: theme.spacing.lg, lineHeight: 24 }]}>

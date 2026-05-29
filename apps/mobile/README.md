@@ -1,157 +1,94 @@
 # Nearfold — Mobile
 
-The Expo + React Native app for Nearfold, a hyperlocal marketplace for home-based sellers and local commerce in Tier 2 Indian cities.
+The Expo + React Native app for Nearfold, a hyperlocal marketplace for home-based sellers and local commerce in Tier-2 Indian cities.
 
-This is `apps/mobile` inside the Nearfold pnpm workspace. The backend lives in `apps/api`.
+`apps/mobile` inside the Nearfold pnpm workspace. Backend: `apps/api`. Shared zod schemas: `packages/shared`.
 
 ## Stack
 
-- **Expo SDK 52** (New Architecture default)
-- **React Native 0.76** · **Reanimated 3** · **Moti**
-- **expo-router** for file-based routing
-- **TanStack Query** for server state · **Zustand** for client state
-- **expo-image** · **expo-haptics** · **expo-secure-store** · **@gorhom/bottom-sheet**
-- **@react-native-firebase/auth** for Phone OTP
-- **react-hook-form + zod** for forms · shared schemas via `@nearfold/shared`
+- **Expo SDK 52** (New Architecture) · **React Native 0.76** · **expo-router**
+- **Reanimated 3** + **Moti** (motion) · **@shopify/flash-list** (lists)
+- **TanStack Query** (server state) · **Zustand** (auth / location / theme)
+- **@react-native-firebase/auth** (phone OTP) · **react-native-razorpay** (payments)
+- **expo-image** (blur-up) · **expo-haptics** · **expo-location** · **expo-notifications** · **expo-secure-store**
+- **react-hook-form + zod** (forms) · **@sentry/react-native** (errors, guarded)
 
 ## Run it
 
 ```bash
-# from repo root
-pnpm install
+pnpm install                              # from repo root
+pnpm --filter @nearfold/shared build      # build shared zod/types first
 
-# build the shared zod/types package once after any schema change
-pnpm --filter @nearfold/shared build
-
-# Phone Auth needs native modules → must use a dev build, NOT Expo Go.
-pnpm --filter mobile prebuild   # generates ios/ + android/
-pnpm --filter mobile ios        # iOS device / simulator
-pnpm --filter mobile android    # Android device / emulator
+# Phone OTP, Razorpay & push need native modules → use a dev build, NOT Expo Go:
+pnpm --filter mobile prebuild
+pnpm --filter mobile ios                  # or: android
 ```
 
-> **Fonts required.** Drop the Fraunces + Inter + JetBrains Mono `.ttf` files into `assets/fonts/` before the first run. See [`assets/fonts/README.md`](./assets/fonts/README.md) for one-command install.
+### Prerequisites (one-time, on your machine)
 
-> **Firebase config required.** Place `GoogleService-Info.plist` (iOS) and `google-services.json` (Android) in `apps/mobile/`. Both are referenced from `app.json`, both are git-ignored. See [Firebase setup](#firebase-setup) below.
+| Need | Where |
+|------|-------|
+| **Fonts** | Drop Fraunces / Inter / JetBrains Mono `.ttf` into `assets/fonts/` — see `assets/fonts/README.md` |
+| **Firebase** | `GoogleService-Info.plist` + `google-services.json` in `apps/mobile/`; enable Phone provider; add test numbers |
+| **Backend URL** | Set `expo.extra.apiBaseUrl` in `app.json` to your LAN IP (`http://10.0.0.5:3000/api/v1`) — devices can't reach `localhost`. iOS simulator may use `localhost`; Android emulator uses `10.0.2.2` |
+| **Razorpay** | Backend holds the keys; the app receives `keyId` + `orderId` from `POST /orders`. Use Razorpay test mode |
+| **EAS** | `eas init` to get a project id; paste it into `app.json` (`extra.eas.projectId` + `updates.url`) |
 
-> **Backend reachable from your device.** Set `expo.extra.apiBaseUrl` in `app.json` to your LAN IP + port (`http://10.0.0.5:3000/api/v1`), not `localhost`. The iOS simulator can use `localhost`, Android emulator uses `10.0.2.2`, physical devices need your LAN IP.
+## Architecture
 
-## Design system pattern
-
-The design system is the source of truth — see the **"Nearfold — Design System v1.2"** front-door in the project Library for all 12 phase artifacts.
-
-In code, this surfaces as:
-
-- **`src/theme/`** — token modules (colors light/dark, spacing, radii, typography, shadows). The `Theme` type is the contract every component reads against.
-- **`src/motion/`** — durations, easings, springs. Moti and Reanimated both consume these directly.
-- **`src/theme/ThemeProvider.tsx`** — resolves Light vs Dark from (a) the user's Zustand-stored mode preference and (b) `Appearance` (system color scheme). Default mode is `'system'`, fallback `'light'`.
-- **`useTheme()`** — the primary hook. Returns the resolved `Theme` object. Use `useThemeContext()` if you also need `setMode` / `cycleMode`.
-
-### Component contract
-
-> **No hardcoded colors, spacing, or radii in components.** Read every visual value from `useTheme()`. This is what lets us ship light + dark from a single component, and what lets the design team adjust the palette without code changes.
-
-## Routes & auth
+### Routes
 
 ```
 app/
-├─ _layout.tsx         # root providers, splash held until fonts+auth hydrate
-├─ index.tsx           # splash → branches on auth status
-├─ auth/               # PUBLIC: phone entry + OTP verify
-│  ├─ _layout.tsx      # bounces authenticated users to /(app)
-│  ├─ phone.tsx
-│  └─ otp.tsx
-├─ (app)/              # PROTECTED: redirects to /auth/phone without JWT
-│  ├─ _layout.tsx
-│  └─ home.tsx         # → /home — placeholder (becomes Discover in Week 3)
-└─ dev/                # __DEV__-only gallery, stripped from prod bundle
-   ├─ _layout.tsx
-   └─ index.tsx
+├─ _layout.tsx              providers, splash gate, Sentry/perf/analytics init
+├─ index.tsx                splash → /home or /auth/phone (by auth status)
+├─ auth/                    PUBLIC — phone entry + OTP verify
+├─ (app)/                   PROTECTED (redirects to /auth/phone without JWT)
+│  ├─ _layout.tsx           guard + push registration
+│  ├─ (tabs)/               Discover · Orders · Profile
+│  ├─ shop/[id], product/[id]
+│  ├─ cart, checkout, order/[id]
+│  └─ addresses, edit-profile, notifications
+└─ dev/                     __DEV__-only design-system gallery (prod-stripped)
 ```
 
-**State machine** (`src/store/authStore.ts`):
-- `idle` → hasn't touched SecureStore yet
-- `hydrating` → reading SecureStore
-- `authenticated` → token present
-- `anonymous` → token absent
+### State
 
-The root layout holds the splash screen until hydration finishes, so the user never sees `/auth/phone` flash for a returning session.
+- **Server state → TanStack Query.** One cache per resource; query keys centralized in `src/lib/queryKeys.ts`. The cart is a single Query entry with optimistic mutations (no Zustand mirror — the backend cart is already authoritative).
+- **Client state → Zustand**, persisted: `authStore` (tokens, SecureStore), `locationStore` + `themeStore` (kv shim, non-secret).
 
-## Firebase setup
+### Design system
 
-Phone Auth uses `@react-native-firebase/auth`, which requires native modules. You cannot run this flow in Expo Go.
+Tokens (`src/theme/`) + motion (`src/motion/`) are the source of truth — see **"Nearfold — Design System v1.2"** in the Library. **Components never hardcode color / spacing / radii**; everything reads from `useTheme()`. That's what lets light + dark ship from one component.
 
-### One-time
+### Money
 
-1. **Firebase project** — create one at https://console.firebase.google.com/.
-2. **Enable Phone provider** — Authentication → Sign-in method → Phone → Enable.
-3. **Test phone numbers** (recommended) — same screen → "Phone numbers for testing" → add e.g. `+91 9000000001` with code `123456`. No real SMS, full flow works.
-4. **iOS APNs** — Project settings → Cloud Messaging → upload APNs auth key (needed for silent push verification on iOS).
-5. **Android SHA-1** — Project settings → Your apps → add Android app, upload SHA-1 fingerprint (`./gradlew signingReport` after prebuild).
-6. **Download config files**:
-   - iOS: `GoogleService-Info.plist` → `apps/mobile/GoogleService-Info.plist`
-   - Android: `google-services.json` → `apps/mobile/google-services.json`
-7. **Backend env** — make sure `apps/api/.env` has `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` from the same project's service account.
+All amounts are **integer paise** end-to-end. Format only at the render edge via `src/lib/format.ts` (`formatPaise`). Totals are always server-recalculated — the client never trusts its own math.
 
-### Run
+## Auth (Weeks 2 + 2.5)
 
-```bash
-pnpm --filter mobile prebuild   # writes ios/ + android/ with Firebase wired in
-pnpm --filter mobile ios        # or android
-```
+Firebase phone OTP → backend mints a JWT. Tokens in SecureStore. `src/api/client.ts` injects the bearer, unwraps the `{success,data}` envelope, and on **401 → refreshes once → retries** (concurrent 401s coalesce onto one refresh). Sign-out best-effort revokes server-side via `/auth/logout`. The refresh-token backend contract is specced in the project doc 🔐 *"Spec — Backend: /auth/refresh + refresh-token rotation"*.
 
-### Local dev without Firebase
+## Build & release (Week 7 config)
 
-If you haven't set Firebase up yet, you can still build the rest of the app on top of the auth UI. Either:
-- Use a Firebase test phone number (above), or
-- Stub `src/firebase/phoneAuth.ts` locally to return a fake confirmation — but **don't commit**, and `verify:prod-strip` won't catch it.
+- **`eas.json`** — `development` (simulator dev client), `preview` (internal APK/ad-hoc), `production` (store, auto-increment). Update channels: `development` / `preview` / `production`.
+- **OTA**: `eas update --channel preview` after a JS-only change.
+- **Observability**: `src/lib/sentry.ts` (no-op until `extra.sentryDsn` set — add the `@sentry/react-native` Expo plugin + `SENTRY_*` EAS secrets for native crashes + source maps), `src/lib/analytics.ts` (typed event taxonomy; wire a provider in `deliver()`), `src/lib/perf.ts` (Phase 04 budget checks: cold start <1.5s, first content <400ms, tap ack <100ms).
 
 ## Production stripping
 
-The dev gallery is more than runtime-gated — its **source files are excluded from production bundles** by a babel plugin:
+The `/dev` gallery is excluded from production bundles by a babel plugin (`babel-plugins/replace-dev-imports.js` → `src/dev-stub.tsx`). Verify with `pnpm --filter mobile verify:prod-strip`.
 
-- **`babel-plugins/replace-dev-imports.js`** — when `BABEL_ENV=production`, rewrites any import that resolves into `src/dev/` so it points at `src/dev-stub.tsx` instead.
-- **`src/dev-stub.tsx`** — a Proxy-based module that returns a no-op `<Redirect href="/" />` component for any named or default access.
+## Week-by-week
 
-```bash
-pnpm --filter mobile verify:prod-strip
-```
-
-Runs `expo export --platform ios` in production mode, then greps the bundle for known dev strings (`storyGroups`, `ColorsStory`, `DevGallery`, etc.). Fails if any appear; confirms `DevDisabled` (the stub) IS present.
-
-## Week-by-week progress
-
-- **Week 1** — Foundation (scaffold + theme + motion + 5 components + dev gallery + prod-strip)
-- **Week 2** — Auth flow: Splash, Phone Entry, OTP Verify, Firebase + backend JWT, expo-secure-store, AuthContext, protected (app) group
-- **Week 3** — Home feed + Shop page (Phase 06 designs, blur-up, stagger)
-- **Week 4** — Product detail + Cart
-- **Week 5** — Payments (Razorpay + COD) + order tracking
-- **Week 6** — Push + Settings
-- **Week 7** — EAS Build alpha + perf audit
-- **Week 8** — TestFlight + Play internal + 10–20 seller pilot
-
-## Project structure
-
-```
-apps/mobile/
-├─ app/                     # expo-router routes (see Routes & auth above)
-├─ src/
-│  ├─ components/           # 5 primitives + barrel
-│  ├─ theme/                # tokens + provider + useTheme
-│  ├─ motion/               # duration / easing / spring tokens
-│  ├─ store/                # Zustand stores (theme, auth, authFlow)
-│  ├─ api/                  # fetch client + per-module API surfaces
-│  ├─ firebase/             # Firebase wrappers (phone OTP for now)
-│  ├─ hooks/                # useFonts, useAuthHydration
-│  ├─ dev/                  # gallery shell, sidebar, stories (PROD-STRIPPED)
-│  └─ dev-stub.tsx          # production stub for src/dev/*
-├─ assets/
-│  └─ fonts/                # ship Fraunces + Inter + JetBrains Mono here
-├─ babel-plugins/
-│  └─ replace-dev-imports.js  # rewrites src/dev/* imports → stub in prod
-├─ scripts/
-│  └─ verify-prod-strip.sh    # bundle-level verification
-├─ app.json                 # Expo config + Firebase plugins + apiBaseUrl
-├─ babel.config.js          # reanimated + conditional dev-strip plugin
-├─ metro.config.js          # pnpm-workspace aware
-└─ tsconfig.json            # extends expo/tsconfig.base
-```
+| Wk | Shipped |
+|----|---------|
+| 1 | Scaffold · theme/motion · 5 primitives · dev gallery · prod-strip |
+| 2 | Auth flow (phone OTP → JWT) · protected routes · SecureStore |
+| 2.5 | Refresh-token interceptor (401 → refresh → retry) |
+| 3 | Tabs · Discover feed · Shop page · location · TanStack Query |
+| 4 | Product gallery · Cart (optimistic, single-seller) |
+| 5 | Checkout · Razorpay + COD · order tracking (live timeline) |
+| 6 | Push notifications · Settings (addresses, profile, theme) |
+| 7 | EAS config · Sentry · analytics taxonomy · perf budgets |
+| 8 | (ops) Alpha → TestFlight + Play internal → seller pilot |

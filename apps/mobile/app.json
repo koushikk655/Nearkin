@@ -7,6 +7,10 @@
     "scheme": "nearfold",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "runtimeVersion": { "policy": "appVersion" },
+    "updates": {
+      "url": "https://u.expo.dev/REPLACE_WITH_EAS_PROJECT_ID"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.nearfold.app",
@@ -62,7 +66,12 @@
       "typedRoutes": true
     },
     "extra": {
-      "apiBaseUrl": "http://localhost:3000/api/v1"
+      "apiBaseUrl": "http://localhost:3000/api/v1",
+      "sentryDsn": "",
+      "appVariant": "development",
+      "eas": {
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
+      }
     }
   }
 }

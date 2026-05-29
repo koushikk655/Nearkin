@@ -18,6 +18,15 @@ export type OrderStatus =
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded' | 'cod_pending';
 export type PaymentMethod = 'razorpay' | 'cod';
 
+/**
+ * How a maker hands an item over. A maker may offer any combination.
+ * NOTE: forward-compatible — these fields are optional until the backend
+ * ships the fulfillment contract (see project doc "Spec — Backend:
+ * fulfillment methods"). Until then, the app treats every maker as
+ * delivery-only and the working flow is unchanged.
+ */
+export type FulfillmentMethod = 'delivery' | 'pickup' | 'shipping';
+
 export interface Me {
   id: string;
   phone: string;
@@ -48,6 +57,8 @@ export interface NearbySeller {
   avgDeliveryMinutes: number;
   verificationStatus: VerificationStatus;
   distanceMeters: number;
+  /** Which hand-over methods this maker offers. Undefined → treat as ['delivery']. */
+  fulfillmentMethods?: FulfillmentMethod[];
 }
 
 export interface SellerProfile {
@@ -68,6 +79,11 @@ export interface SellerProfile {
   totalOrders: number;
   verificationStatus: VerificationStatus;
   createdAt: string;
+  /** Fulfillment — optional until the backend ships the contract. */
+  fulfillmentMethods?: FulfillmentMethod[];
+  pickupAddress?: string | null;
+  shippingFee?: number | null; // paise
+  shippingDays?: number | null;
 }
 
 export interface BusinessHour {
@@ -145,6 +161,8 @@ export interface Order {
   deliveredAt: string | null;
   createdAt: string;
   updatedAt: string;
+  /** Optional until the backend ships the fulfillment contract. */
+  fulfillmentMethod?: FulfillmentMethod;
 }
 
 export interface OrderStatusLog {

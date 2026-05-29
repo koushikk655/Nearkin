@@ -13,12 +13,14 @@ import { Chip } from '../Chip';
 export const CATEGORIES = [
   'Bakes',
   'Pickles',
+  'Sweets',
   'Crafts',
   'Candles',
-  'Sweets',
+  'Ceramics',
+  'Plants',
+  'Prints',
   'Decor',
   'Gifts',
-  'Snacks',
 ] as const;
 
 export interface CategoryChipsProps {

@@ -10,12 +10,16 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.nearfold.app",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Nearfold uses your location to show home makers and shops within delivery range of you."
+      }
     },
     "android": {
       "package": "com.nearfold.app",
       "edgeToEdgeEnabled": true,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
     },
     "web": {
       "bundler": "metro"
@@ -26,6 +30,12 @@
       "expo-secure-store",
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Nearfold uses your location to show makers within delivery range."
+        }
+      ],
       [
         "expo-build-properties",
         {

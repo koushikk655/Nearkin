@@ -19,7 +19,8 @@
 #     applied automatically once DATABASE_URL is set.
 #   - The remaining third-party credentials (Firebase, Razorpay, Cloudinary,
 #     Google Maps) are marked `sync: false` — set them in Render's dashboard
-#     when you're ready to enable each feature.
+#     when you're ready to enable each feature. They are OPTIONAL: the server
+#     boots and migrates fine without them.
 #
 # Spec reference: https://render.com/docs/blueprint-spec
 # ============================================================================
@@ -37,7 +38,9 @@ services:
 
     # Build:
     # 1. Enable corepack so pnpm@9 is available
-    # 2. Install workspace dependencies
+    # 2. Install workspace dependencies — `--prod=false` FORCES devDependencies
+    #    even though NODE_ENV=production (pnpm otherwise skips them, which would
+    #    drop typescript/tsx/drizzle-kit and break the build + migrate steps).
     # 3. Compile TypeScript across the workspace
     # 4. Apply Drizzle migrations (idempotent — safe to run on every deploy)
     #
@@ -48,7 +51,7 @@ services:
     buildCommand: |
       corepack enable
       corepack prepare pnpm@9.12.0 --activate
-      pnpm install --no-frozen-lockfile
+      pnpm install --no-frozen-lockfile --prod=false
       pnpm build
       pnpm --filter @nearfold/api db:migrate
 

@@ -1,30 +1,26 @@
-// Splash route — first thing the user sees after fonts + auth hydrate.
-// Branches on auth status: logged-in → /(app) home; otherwise → /auth/phone.
-//
-// Kept deliberately tiny — anything visible in this file only flashes for
-// a frame before navigation kicks in.
+// Splash route — first thing expo-router renders after the root Stack mounts.
+// Uses declarative <Redirect> to avoid the race condition that imperative
+// router.replace() in a useEffect causes ("navigate before mounting" error).
 
-import { useEffect } from 'react';
 import { View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Redirect } from 'expo-router';
 
 import { useTheme } from '../src/theme/useTheme';
 import { useAuthStore } from '../src/store/authStore';
 
 export default function SplashRoute() {
   const theme = useTheme();
-  const router = useRouter();
   const status = useAuthStore((s) => s.status);
 
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.replace('/home');
-    } else if (status === 'anonymous') {
-      router.replace('/auth/phone');
-    }
-    // 'idle' / 'hydrating' should not happen here — root layout holds
-    // splash until hydration finishes — but if they slip through, we wait.
-  }, [status, router]);
+  if (status === 'authenticated') {
+    return <Redirect href="/home" />;
+  }
+  if (status === 'anonymous') {
+    return <Redirect href="/auth/phone" />;
+  }
 
+  // 'idle' or 'hydrating' — auth store is still reading SecureStore.
+  // Root layout keeps the splash screen visible via preventAutoHideAsync,
+  // so just render an invisible placeholder until hydration resolves.
   return <View style={{ flex: 1, backgroundColor: theme.colors.bg }} />;
 }

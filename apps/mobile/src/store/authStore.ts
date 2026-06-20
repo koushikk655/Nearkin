@@ -23,6 +23,11 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 import type { AuthUser } from '../api/auth';
 
+// ─── DEV BYPASS ──────────────────────────────────────────────────────────────
+// Set to true to skip Firebase auth and auto-login as a mock user.
+// Flip back to false when you want to test the real OTP flow.
+const DEV_AUTO_LOGIN = __DEV__ && true;
+
 export type AuthStatus = 'idle' | 'hydrating' | 'authenticated' | 'anonymous';
 
 /** What the backend returns from /auth/verify-otp and /auth/refresh. */
@@ -122,7 +127,7 @@ export const useAuthStore = create<AuthState>()(
       setStatus: (s) => set({ status: s }),
     }),
     {
-      name: 'nearfold/auth',
+      name: 'nearfold.auth',
       storage: createJSONStorage(() => secureStringStorage),
       partialize: (state) => ({
         token: state.token,
@@ -135,11 +140,24 @@ export const useAuthStore = create<AuthState>()(
         if (error) {
           // SecureStore can fail on simulators that don't have Keychain
           // configured. We swallow and treat as anonymous.
-          // eslint-disable-next-line no-console
+           
           console.warn('[auth] rehydrate failed', error);
         }
         queueMicrotask(() => {
-          useAuthStore.getState().markHydrated();
+          if (DEV_AUTO_LOGIN) {
+            useAuthStore.setState({
+              token: 'dev-bypass-token',
+              user: {
+                id: 'dev-user-001',
+                phone: '+918638155464',
+                role: 'buyer',
+                name: 'Dev User',
+              },
+              status: 'authenticated',
+            });
+          } else {
+            useAuthStore.getState().markHydrated();
+          }
         });
       },
     },

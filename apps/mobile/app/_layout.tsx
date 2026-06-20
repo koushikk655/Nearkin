@@ -41,8 +41,9 @@ export default function RootLayout() {
     }
   }, [ready]);
 
-  if (!ready) return null;
-
+  // Never return null — expo-router requires the navigator to be rendered on
+  // every render. The splash screen (preventAutoHideAsync / hideAsync) visually
+  // covers the content while fonts and auth hydrate, so there is no flash.
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>

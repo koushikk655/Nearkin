@@ -25,9 +25,7 @@
 import Constants from 'expo-constants';
 
 import { useAuthStore } from '../store/authStore';
-// Static import is safe despite the client ↔ auth cycle: `authApi` is only
-// dereferenced inside refreshTokenOnce(), never at module-eval time.
-import { authApi } from './auth';
+import type * as AuthModule from './auth';
 
 export class ApiError extends Error {
   readonly status: number;
@@ -104,6 +102,10 @@ async function refreshTokenOnce(): Promise<boolean> {
 
   refreshInFlight = (async (): Promise<boolean> => {
     try {
+      // Lazy import breaks the client ↔ auth circular dependency: authApi is
+      // only needed here at call-time, never at module-eval time.
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { authApi } = require('./auth') as typeof AuthModule;
       const fresh = await authApi.refresh(refreshToken);
       useAuthStore.getState().setSession(fresh);
       return true;
@@ -111,7 +113,7 @@ async function refreshTokenOnce(): Promise<boolean> {
       // Any refresh failure → wipe local state. Distinguishing
       // REFRESH_REUSED / REFRESH_EXPIRED / REFRESH_INVALID is a Sentry
       // concern; for the UI they all mean "sign in again".
-      // eslint-disable-next-line no-console
+       
       console.warn('[auth] refresh failed', err);
       useAuthStore.getState().clear();
       return false;
@@ -227,12 +229,7 @@ async function request<T>(
   } catch (err) {
     // Only react to 401s on authenticated requests that haven't already
     // opted out of refresh.
-    if (
-      !(err instanceof ApiError) ||
-      err.status !== 401 ||
-      opts.unauth ||
-      opts.skipRefresh
-    ) {
+    if (!(err instanceof ApiError) || err.status !== 401 || opts.unauth || opts.skipRefresh) {
       throw err;
     }
 
@@ -257,6 +254,5 @@ export const api = {
     request<T>('PATCH', path, body, opts),
   put: <T>(path: string, body?: unknown, opts?: RequestOptions) =>
     request<T>('PUT', path, body, opts),
-  delete: <T>(path: string, opts?: RequestOptions) =>
-    request<T>('DELETE', path, undefined, opts),
+  delete: <T>(path: string, opts?: RequestOptions) => request<T>('DELETE', path, undefined, opts),
 };

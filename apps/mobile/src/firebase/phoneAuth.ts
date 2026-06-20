@@ -14,11 +14,18 @@
 //   testing", register e.g. +91 9000000001 with code 123456. Real SMS
 //   never sent; the OTP screen still works end-to-end.
 
-import auth, {
-  type FirebaseAuthTypes,
-} from '@react-native-firebase/auth';
+import auth, { type FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 export type PhoneConfirmation = FirebaseAuthTypes.ConfirmationResult;
+
+// In dev builds, disable app verification so the simulator can authenticate
+// without APNs or reCAPTCHA. This lets fictional test phone numbers (configured
+// in Firebase Console → Authentication → Sign-in method → Phone numbers for
+// testing) work without any challenge. __DEV__ is false in production builds,
+// so this never runs in a release.
+if (__DEV__) {
+  auth().settings.appVerificationDisabledForTesting = true;
+}
 
 /**
  * Trigger Firebase phone OTP. Returns a confirmation handle the OTP screen

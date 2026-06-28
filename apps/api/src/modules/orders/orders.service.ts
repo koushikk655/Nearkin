@@ -18,7 +18,7 @@ import { calculateOrderTotals } from '../../utils/money.js';
 import { addressesRepository } from '../addresses/addresses.repository.js';
 import { cartRepository } from '../cart/cart.repository.js';
 import { notificationsService } from '../notifications/notifications.service.js';
-import { razorpayService } from '../payments/razorpay.service.js';
+import { providers } from '../../providers/index.js';
 import { productsRepository } from '../products/products.repository.js';
 import { sellersRepository } from '../sellers/sellers.repository.js';
 import { assertValidTransition, canActorTransition } from './orders.stateMachine.js';
@@ -134,7 +134,7 @@ export const ordersService = {
 
     if (!isCod) {
       // Create Razorpay order; persist its id back on our order row.
-      razorpayOrder = await razorpayService.createOrder({
+      razorpayOrder = await providers.payment.createOrder({
         amountPaise: totals.totalAmount,
         receipt: order.id,
         notes: { nearkinOrderId: order.id },
@@ -160,7 +160,7 @@ export const ordersService = {
             orderId: razorpayOrder.id,
             amount: razorpayOrder.amount,
             currency: razorpayOrder.currency,
-            keyId: razorpayService.publicKeyId(),
+            keyId: providers.payment.publicKeyId(),
           }
         : null,
     };

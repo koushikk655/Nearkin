@@ -3,7 +3,7 @@ import { ForbiddenError, NotFoundError, PaymentError } from '../../utils/errors.
 import { logger } from '../../utils/logger.js';
 import { notificationsService } from '../notifications/notifications.service.js';
 import { ordersRepository } from '../orders/orders.repository.js';
-import { razorpayService } from './razorpay.service.js';
+import { providers } from '../../providers/index.js';
 
 export const paymentsService = {
   /**
@@ -23,10 +23,10 @@ export const paymentsService = {
       throw new ForbiddenError('Not authorized to verify this payment');
     }
 
-    const valid = razorpayService.verifyPaymentSignature({
-      razorpayOrderId: input.razorpayOrderId,
-      razorpayPaymentId: input.razorpayPaymentId,
-      razorpaySignature: input.razorpaySignature,
+    const valid = providers.payment.verifyPaymentSignature({
+      orderId: input.razorpayOrderId,
+      paymentId: input.razorpayPaymentId,
+      signature: input.razorpaySignature,
     });
     if (!valid) throw new PaymentError('Signature mismatch');
 

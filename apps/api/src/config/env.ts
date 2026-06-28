@@ -36,6 +36,14 @@ const envSchema = z.object({
   OTP_REQUEST_LIMIT_PER_HOUR: z.coerce.number().int().min(1).max(100).default(5),
 
   CORS_ORIGINS: z.string().default('*'),
+
+  // --- Provider selection (hexagonal adapters; see src/providers) ---
+  // Free-tier defaults today; change the value to migrate — no code change.
+  STORAGE_PROVIDER: z.enum(['cloudinary', 's3']).default('cloudinary'),
+  OTP_PROVIDER: z.enum(['firebase']).default('firebase'),
+  PUSH_PROVIDER: z.enum(['expo', 'fcm']).default('expo'),
+  PAYMENT_PROVIDER: z.enum(['razorpay']).default('razorpay'),
+  GEO_PROVIDER: z.enum(['google']).default('google'),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -65,3 +73,6 @@ export const hasRazorpayConfig = Boolean(
 export const hasCloudinaryConfig = Boolean(
   env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET,
 );
+
+/** True when a Google Maps API key is present. */
+export const hasGoogleMapsConfig = Boolean(env.GOOGLE_MAPS_API_KEY);

@@ -1,10 +1,14 @@
 import { env } from './config/env.js';
 import { pool } from './db/client.js';
+import { logActiveProviders } from './providers/index.js';
 import { createServer } from './server.js';
 import { logger } from './utils/logger.js';
 
 async function main(): Promise<void> {
   const app = createServer();
+
+  // Wire + report the active provider adapters (storage/auth/push/payment/geo).
+  logActiveProviders();
 
   const server = app.listen(env.PORT, () => {
     logger.info({ port: env.PORT, env: env.NODE_ENV }, 'NearKin API listening');

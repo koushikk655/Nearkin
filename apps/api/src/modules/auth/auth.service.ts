@@ -3,7 +3,7 @@ import { RateLimitError } from '../../utils/errors.js';
 import { signAccessToken } from '../../utils/jwt.js';
 import { logger } from '../../utils/logger.js';
 import { authRepository } from './auth.repository.js';
-import { verifyFirebaseIdToken } from './firebase.js';
+import { providers } from '../../providers/index.js';
 
 export const authService = {
   /**
@@ -30,7 +30,7 @@ export const authService = {
     phone: string,
     firebaseIdToken: string,
   ): Promise<{ token: string; user: { id: string; phone: string; role: string; name: string | null } }> {
-    const verifiedPhone = await verifyFirebaseIdToken(firebaseIdToken);
+    const { phoneNumber: verifiedPhone } = await providers.otpAuth.verifyOtpToken(firebaseIdToken);
     if (verifiedPhone !== phone) {
       // Defensive — phone in payload must match the verified token
       logger.warn({ verifiedPhone, payloadPhone: phone }, 'Phone mismatch');

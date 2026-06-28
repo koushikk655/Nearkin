@@ -5,7 +5,7 @@ import { asyncHandler } from '../../utils/asyncHandler.js';
 import { PaymentError, UnauthorizedError } from '../../utils/errors.js';
 import { logger } from '../../utils/logger.js';
 import { paymentsService } from './payments.service.js';
-import { razorpayService } from './razorpay.service.js';
+import { providers } from '../../providers/index.js';
 
 export const verifyPaymentSchema = z.object({
   razorpayOrderId: z.string(),
@@ -43,7 +43,7 @@ export const paymentsController = {
       (req as unknown as { rawBody?: Buffer }).rawBody?.toString('utf8') ??
       JSON.stringify(req.body);
 
-    const valid = razorpayService.verifyWebhookSignature(rawBody, signature);
+    const valid = providers.payment.verifyWebhookSignature(rawBody, signature);
     if (!valid) {
       logger.warn({ signature }, 'Invalid Razorpay webhook signature');
       throw new PaymentError('Invalid webhook signature');

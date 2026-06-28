@@ -1,7 +1,7 @@
 import type { OrderStatus } from '@nearkin/shared';
 import { usersRepository } from '../users/users.repository.js';
 import { logger } from '../../utils/logger.js';
-import { sendPushNotifications } from './expoPush.js';
+import { providers } from '../../providers/index.js';
 
 const STATUS_COPY: Record<OrderStatus, { title: string; body: (id: string) => string }> = {
   pending: { title: 'Order placed', body: (id) => `Order ${id.slice(0, 8)} awaiting confirmation.` },
@@ -35,7 +35,7 @@ async function pushToUser(
     logger.debug({ userId }, 'No expo push token for user, skipping notification');
     return;
   }
-  await sendPushNotifications([{ to: user.expoPushToken, title, body, data }]);
+  await providers.push.send([{ to: user.expoPushToken, title, body, data }]);
 }
 
 export const notificationsService = {

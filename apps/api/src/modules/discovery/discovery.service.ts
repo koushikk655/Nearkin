@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '../../db/client.js';
-import { latitudeSchema, longitudeSchema } from '@nearkin/shared';
+import { latitudeSchema, longitudeSchema } from '@neario/shared';
 
 export const discoveryQuerySchema = z.object({
   lat: latitudeSchema,

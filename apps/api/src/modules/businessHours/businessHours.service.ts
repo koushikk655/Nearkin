@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import type { UpsertBusinessHoursInput } from '@nearkin/shared';
+import type { UpsertBusinessHoursInput } from '@neario/shared';
 import { db } from '../../db/client.js';
 import { sellerBusinessHours } from '../../db/schema.js';
 import { NotFoundError } from '../../utils/errors.js';

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { upsertBusinessHoursSchema } from '@nearkin/shared';
+import { upsertBusinessHoursSchema } from '@neario/shared';
 import { requireAuth } from '../../middlewares/auth.js';
 import { validate } from '../../middlewares/validate.js';
 import { businessHoursController } from './businessHours.controller.js';

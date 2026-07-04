@@ -4,7 +4,7 @@ import {
   setShopOpenSchema,
   updateSellerProfileSchema,
   updateVerificationStatusSchema,
-} from '@nearkin/shared';
+} from '@neario/shared';
 import { requireAdmin, requireAuth } from '../../middlewares/auth.js';
 import { validate } from '../../middlewares/validate.js';
 import { sellersController } from './sellers.controller.js';

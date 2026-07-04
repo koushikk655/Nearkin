@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { requestOtpSchema, verifyOtpSchema } from '@nearkin/shared';
+import { requestOtpSchema, verifyOtpSchema } from '@neario/shared';
 import { authLimiter } from '../../middlewares/rateLimit.js';
 import { validate } from '../../middlewares/validate.js';
 import { authController } from './auth.controller.js';

@@ -1,7 +1,7 @@
 import { and, eq } from 'drizzle-orm';
 import { db } from '../../db/client.js';
 import { carts, type Cart } from '../../db/schema.js';
-import type { CartItem } from '@nearkin/shared';
+import type { CartItem } from '@neario/shared';
 
 /**
  * Repository for the persistent cart table.

@@ -1,7 +1,7 @@
 # ============================================================================
-# NearKin — Render Blueprint
+# Neario — Render Blueprint
 #
-# One-click deploy of the NearKin backend to Render's free tier.
+# One-click deploy of the Neario backend to Render's free tier.
 #
 # Provisions:
 #   - 1 web service (Node 20, Singapore region — closest to Indian users)
@@ -26,7 +26,7 @@
 
 services:
   - type: web
-    name: nearfold-api
+    name: neario-api
     runtime: node
     plan: free
     region: singapore
@@ -50,9 +50,9 @@ services:
       corepack prepare pnpm@9.12.0 --activate
       pnpm install --no-frozen-lockfile
       pnpm build
-      pnpm --filter @nearkin/api db:migrate
+      pnpm --filter @neario/api db:migrate
 
-    startCommand: pnpm --filter @nearkin/api start
+    startCommand: pnpm --filter @neario/api start
 
     envVars:
       # --- Runtime ---

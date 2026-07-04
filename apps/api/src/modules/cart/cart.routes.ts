@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addToCartSchema, updateCartItemSchema } from '@nearkin/shared';
+import { addToCartSchema, updateCartItemSchema } from '@neario/shared';
 import { requireAuth } from '../../middlewares/auth.js';
 import { validate } from '../../middlewares/validate.js';
 import { cartController } from './cart.controller.js';

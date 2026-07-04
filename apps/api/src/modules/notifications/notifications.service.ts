@@ -1,4 +1,4 @@
-import type { OrderStatus } from '@nearkin/shared';
+import type { OrderStatus } from '@neario/shared';
 import { usersRepository } from '../users/users.repository.js';
 import { logger } from '../../utils/logger.js';
 import { sendPushNotifications } from './expoPush.js';

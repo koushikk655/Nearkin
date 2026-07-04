@@ -1,4 +1,4 @@
-import type { CreateReviewInput, PaginationQuery } from '@nearkin/shared';
+import type { CreateReviewInput, PaginationQuery } from '@neario/shared';
 import { ConflictError, ForbiddenError, NotFoundError } from '../../utils/errors.js';
 import { ordersRepository } from '../orders/orders.repository.js';
 import { sellersRepository } from '../sellers/sellers.repository.js';

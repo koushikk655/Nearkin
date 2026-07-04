@@ -1,5 +1,5 @@
 -- ============================================================================
--- NearKin initial schema
+-- Neario initial schema
 -- Requires: PostgreSQL 14+ with the PostGIS extension available.
 -- ============================================================================
 

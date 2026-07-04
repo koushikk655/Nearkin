@@ -2,7 +2,7 @@ import type {
   RegisterDeviceTokenInput,
   UpdateUserLocationInput,
   UpdateUserProfileInput,
-} from '@nearkin/shared';
+} from '@neario/shared';
 import { NotFoundError } from '../../utils/errors.js';
 import { usersRepository } from './users.repository.js';
 

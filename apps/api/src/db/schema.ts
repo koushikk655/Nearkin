@@ -1,5 +1,5 @@
 /**
- * Drizzle ORM schema for NearKin.
+ * Drizzle ORM schema for Neario.
  *
  * Notes on PostGIS geography columns:
  * - Drizzle has no first-class `geography` column, so we declare them as

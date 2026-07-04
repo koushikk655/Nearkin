@@ -5,7 +5,7 @@ import type {
   OrderStatus,
   PaginationQuery,
   UpdateOrderStatusInput,
-} from '@nearkin/shared';
+} from '@neario/shared';
 import type { Order, Product } from '../../db/schema.js';
 import {
   ConflictError,
@@ -137,7 +137,7 @@ export const ordersService = {
       razorpayOrder = await razorpayService.createOrder({
         amountPaise: totals.totalAmount,
         receipt: order.id,
-        notes: { nearkinOrderId: order.id },
+        notes: { nearioOrderId: order.id },
       });
       const updated = await ordersRepository.setStatus(order.id, 'pending', {
         razorpayOrderId: razorpayOrder.id,

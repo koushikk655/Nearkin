@@ -1,4 +1,4 @@
-# NearKin — Marketing &amp; Brand Assets
+# Neario — Marketing &amp; Brand Assets
 
 Pre-launch marketing and brand artifacts. All static HTML with inline CSS — no framework, no build step.
 
@@ -22,7 +22,7 @@ python3 -m http.server 8000
 # then visit http://localhost:8000/
 ```
 
-## Deployment to nearkin.in
+## Deployment to neario.in
 
 Recommended structure when deploying:
 
@@ -48,6 +48,6 @@ vercel deploy
 
 ## Source
 
-Designs from the NearKin Design System v1.2 (see the Hyperagent Library). Master index links to component-level specs, motion language, performance principles, and the React Native engineering readme.
+Designs from the Neario Design System v1.2 (see the Hyperagent Library). Master index links to component-level specs, motion language, performance principles, and the React Native engineering readme.
 
 — Generated from design artifacts, committed to a feature branch for review before merging to `main`.

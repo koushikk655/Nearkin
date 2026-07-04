@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import type { UpsertBusinessHoursInput } from '@nearkin/shared';
+import type { UpsertBusinessHoursInput } from '@neario/shared';
 import { sendSuccess } from '../../utils/apiResponse.js';
 import { asyncHandler } from '../../utils/asyncHandler.js';
 import { UnauthorizedError } from '../../utils/errors.js';

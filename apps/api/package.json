@@ -1,5 +1,5 @@
 {
-  "name": "@nearkin/api",
+  "name": "@neario/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,7 +16,7 @@
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
-    "@nearkin/shared": "workspace:*",
+    "@neario/shared": "workspace:*",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

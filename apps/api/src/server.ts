@@ -26,17 +26,19 @@ export function createServer(): Express {
 
   // Request logging + tracing
   app.use(requestId);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const httpLogger = (pinoHttp as any).default ?? pinoHttp;
   app.use(
-    pinoHttp({
+    httpLogger({
       logger,
-      customLogLevel: (_req, res, err) => {
+      customLogLevel: (_req: any, res: any, err: any) => {
         if (err || res.statusCode >= 500) return 'error';
         if (res.statusCode >= 400) return 'warn';
         return 'info';
       },
       serializers: {
-        req: (req) => ({ id: req.id, method: req.method, url: req.url }),
-        res: (res) => ({ statusCode: res.statusCode }),
+        req: (req: any) => ({ id: req.id, method: req.method, url: req.url }),
+        res: (res: any) => ({ statusCode: res.statusCode }),
       },
     }),
   );

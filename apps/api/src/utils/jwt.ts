@@ -11,14 +11,14 @@ export interface JwtPayload {
 export function signAccessToken(payload: JwtPayload): string {
   const options: SignOptions = {
     expiresIn: env.JWT_ACCESS_TOKEN_TTL as SignOptions['expiresIn'],
-    issuer: 'nearfold-api',
+    issuer: 'neario-api',
   };
   return jwt.sign(payload, env.JWT_SECRET, options);
 }
 
 export function verifyAccessToken(token: string): JwtPayload {
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET, { issuer: 'nearfold-api' });
+    const decoded = jwt.verify(token, env.JWT_SECRET, { issuer: 'neario-api' });
     if (typeof decoded === 'string') {
       throw new UnauthorizedError('Invalid token payload');
     }

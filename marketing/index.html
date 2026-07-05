@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Neario — the discovery layer for local commerce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --cream:#FAF8F4; --cream2:#F1ECE3; --paper:#FFFDF9;
+    --ink:#0E0B08; --ink2:#2A2420; --muted:#7A7066;
+    --saffron:#FF8A3D; --saffron-deep:#E26C1B; --line:#E4DCCF;
+    --shadow:0 24px 60px -28px rgba(40,28,16,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--cream); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif; line-height:1.6;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:0 7vw}
+  @media(min-width:900px){.wrap{padding:0 6vw}}
+  h1,h2,h3,.serif{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto}
+  .mono{font-family:'JetBrains Mono',monospace}
+  a{color:inherit;text-decoration:none}
+
+  /* ---- nav ---- */
+  nav{position:sticky;top:0;z-index:40;backdrop-filter:saturate(1.4) blur(10px);
+    background:rgba(250,248,244,.78);border-bottom:1px solid transparent;transition:border-color .3s}
+  nav.scrolled{border-color:var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces';font-weight:600;font-size:23px;letter-spacing:-.01em}
+  .mark{width:34px;height:26px;display:block;flex:none}
+  .pre{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--saffron-deep);
+    border:1px solid var(--saffron);border-radius:100px;padding:4px 10px;font-weight:600}
+  .nav-cta{font-size:14.5px;font-weight:600;background:var(--ink);color:var(--cream);
+    padding:11px 19px;border-radius:100px;transition:transform .2s, background .2s}
+  .nav-cta:hover{transform:translateY(-2px);background:var(--saffron-deep)}
+  .nav-right{display:flex;align-items:center;gap:18px}
+  @media(max-width:640px){.pre{display:none}}
+
+  /* ---- hero ---- */
+  .hero{padding-top:64px;padding-bottom:40px;display:grid;grid-template-columns:1fr;gap:48px;align-items:center}
+  @media(min-width:980px){.hero{grid-template-columns:1.08fr .92fr;padding-top:88px;padding-bottom:64px;gap:30px}}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--saffron-deep);font-weight:600;
+    font-size:14px;letter-spacing:.02em;margin-bottom:24px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--saffron);
+    box-shadow:0 0 0 4px rgba(255,138,61,.18)}
+  h1.head{font-weight:600;font-size:clamp(42px,7vw,76px);line-height:1.02;letter-spacing:-.025em}
+  h1.head em{font-style:italic;color:var(--saffron-deep);font-weight:500}
+  .sub{margin-top:26px;font-size:clamp(17px,2vw,20px);color:var(--ink2);max-width:30ch}
+  .hero-actions{margin-top:34px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .btn{font-weight:600;font-size:15.5px;padding:15px 26px;border-radius:100px;cursor:pointer;border:0;
+    transition:transform .2s ease, box-shadow .2s}
+  .btn-primary{background:var(--saffron);color:#2a1402;box-shadow:0 14px 30px -12px rgba(226,108,27,.65)}
+  .btn-primary:hover{transform:translateY(-3px)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-3px)}
+  .hero-foot{margin-top:24px;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+  .hero-foot .mono{color:var(--ink2)}
+
+  /* ---- phone mockup ---- */
+  .stage{position:relative;display:flex;justify-content:center}
+  .glow{position:absolute;inset:-8% -4% 0 -4%;background:radial-gradient(60% 55% at 70% 28%,rgba(255,138,61,.30),transparent 70%);filter:blur(10px);z-index:0}
+  .phone{position:relative;z-index:1;width:300px;max-width:82vw;background:var(--ink);border-radius:42px;
+    padding:11px;box-shadow:var(--shadow);animation:float 7s ease-in-out infinite}
+  @media(prefers-reduced-motion:reduce){.phone{animation:none}}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(-1deg)}}
+  .screen{background:var(--cream);border-radius:33px;overflow:hidden;height:600px;display:flex;flex-direction:column}
+  .s-top{padding:16px 18px 12px;background:linear-gradient(160deg,#FFB070,var(--saffron) 55%,var(--saffron-deep));color:#fff}
+  .s-loc{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;opacity:.95}
+  .s-loc svg{width:13px;height:13px}
+  .s-h{font-family:'Fraunces';font-weight:600;font-size:21px;margin-top:7px;letter-spacing:-.01em;line-height:1.15}
+  .s-search{margin-top:13px;background:rgba(255,255,255,.92);border-radius:12px;padding:10px 13px;
+    color:var(--muted);font-size:13px;display:flex;align-items:center;gap:8px}
+  .s-search svg{width:14px;height:14px;color:var(--saffron-deep)}
+  .chips{display:flex;gap:7px;padding:13px 14px 4px;overflow:hidden;flex-wrap:wrap}
+  .chip{font-size:11.5px;font-weight:600;padding:7px 12px;border-radius:100px;background:var(--cream2);color:var(--ink2);white-space:nowrap}
+  .chip.on{background:var(--ink);color:var(--cream)}
+  .feed{padding:8px 14px 16px;overflow:hidden;flex:1}
+  .card{display:flex;gap:12px;align-items:center;background:var(--paper);border:1px solid var(--line);
+    border-radius:16px;padding:11px;margin-top:11px}
+  .thumb{width:52px;height:52px;border-radius:13px;flex:none;display:grid;place-items:center;
+    font-family:'Fraunces';font-weight:600;font-size:22px;color:#fff}
+  .t1{background:linear-gradient(140deg,#F2994A,#E2671A)} .t2{background:linear-gradient(140deg,#7BB661,#3E7C4B)}
+  .t3{background:linear-gradient(140deg,#C45D9A,#8E3C73)} .t4{background:linear-gradient(140deg,#5E97C9,#2F5E86)}
+  .c-name{font-family:'Fraunces';font-weight:600;font-size:15px;letter-spacing:-.01em;line-height:1.1}
+  .c-meta{font-size:11.5px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:7px}
+  .km{color:var(--saffron-deep);font-weight:500}
+  .open{display:inline-flex;align-items:center;gap:4px}
+  .open::before{content:"";width:6px;height:6px;border-radius:50%;background:#3E9B54}
+  .c-right{margin-left:auto;align-self:flex-start;color:var(--line)}
+  .c-right svg{width:18px;height:18px}
+
+  /* ---- section scaffolding ---- */
+  section{position:relative}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .klabel{font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--saffron-deep)}
+
+  /* ---- is / isn't ---- */
+  .define{padding-top:96px;padding-bottom:30px}
+  .define h2{font-weight:500;font-size:clamp(30px,4.6vw,52px);line-height:1.08;letter-spacing:-.02em;max-width:18ch;margin-top:20px}
+  .define h2 b{font-weight:600;color:var(--saffron-deep);font-style:italic}
+  .nots{margin-top:48px;display:grid;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  @media(min-width:760px){.nots{grid-template-columns:repeat(3,1fr)}}
+  .not{background:var(--cream);padding:30px 28px 34px}
+  .not .x{font-family:'Fraunces';font-size:26px;color:var(--saffron);line-height:1}
+  .not h4{font-family:'Fraunces';font-weight:600;font-size:19px;margin:14px 0 7px;letter-spacing:-.01em}
+  .not p{font-size:14.5px;color:var(--muted)}
+
+  /* ---- manifesto ---- */
+  .manifesto{padding:96px 0}
+  .manifesto .wrap{max-width:760px}
+  .manifesto p{font-family:'Fraunces';font-weight:400;font-size:clamp(21px,2.7vw,27px);line-height:1.5;color:var(--ink2);letter-spacing:-.005em}
+  .manifesto p+p{margin-top:26px}
+  .dropcap::first-letter{font-weight:600;font-size:4.4em;line-height:.82;float:left;margin:8px 14px 0 0;color:var(--saffron-deep)}
+
+  /* ---- archetypes ---- */
+  .makers{padding-top:40px;padding-bottom:96px}
+  .makers-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:14px}
+  .makers-head h3{font-weight:600;font-size:clamp(26px,3.6vw,38px);letter-spacing:-.02em;max-width:16ch}
+  .makers-head p{color:var(--muted);font-size:15px;max-width:34ch}
+  .mk-list{margin-top:30px;border-top:1px solid var(--line)}
+  .mk{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:baseline;
+    padding:24px 6px;border-bottom:1px solid var(--line);transition:padding-left .35s ease, background .35s}
+  .mk:hover{padding-left:18px;background:linear-gradient(90deg,rgba(255,138,61,.07),transparent 60%)}
+  .mk .idx{font-family:'JetBrains Mono';font-size:12.5px;color:var(--saffron-deep)}
+  .mk .who{font-family:'Fraunces';font-style:italic;font-weight:500;font-size:clamp(22px,3vw,30px);letter-spacing:-.01em}
+  .mk .what{font-size:14.5px;color:var(--muted);justify-self:end;text-align:right;max-width:30ch}
+  @media(max-width:640px){.mk{grid-template-columns:auto 1fr}.mk .what{display:none}}
+
+  /* ---- quote ---- */
+  .quote{background:var(--ink);color:var(--cream);padding:clamp(80px,12vw,140px) 0}
+  .quote .wrap{max-width:980px}
+  .quote blockquote{font-family:'Fraunces';font-weight:400;font-size:clamp(28px,4.4vw,50px);line-height:1.18;letter-spacing:-.02em}
+  .quote blockquote em{font-style:italic;color:var(--saffron)}
+  .quote .by{margin-top:30px;font-size:14px;letter-spacing:.04em;color:#A89C8C}
+
+  /* ---- how ---- */
+  .how{padding-top:96px;padding-bottom:96px}
+  .how h3{font-weight:600;font-size:clamp(26px,3.6vw,40px);letter-spacing:-.02em;margin-bottom:8px}
+  .how .lead{color:var(--muted);max-width:40ch;margin-bottom:46px;font-size:15.5px}
+  .steps{display:grid;gap:26px}
+  @media(min-width:820px){.steps{grid-template-columns:repeat(3,1fr);gap:30px}}
+  .step{position:relative}
+  .step .n{font-family:'Fraunces';font-weight:600;font-size:46px;color:var(--saffron);line-height:1;
+    -webkit-text-stroke:0;opacity:.95}
+  .step h4{font-family:'Fraunces';font-weight:600;font-size:21px;margin:16px 0 9px;letter-spacing:-.01em}
+  .step p{color:var(--ink2);font-size:15px}
+  .step.s2 .n,.step.s3 .n{color:var(--ink);opacity:.16}
+  .step.s2:hover .n,.step.s3:hover .n{color:var(--saffron);opacity:.95;transition:color .4s,opacity .4s}
+
+  /* ---- principles strip ---- */
+  .princ{padding-top:30px;padding-bottom:96px}
+  .princ .row{display:flex;flex-wrap:wrap;gap:10px}
+  .pill{font-size:14.5px;font-weight:500;padding:11px 17px;border-radius:100px;border:1.5px solid var(--line);
+    background:var(--paper);transition:border-color .25s, transform .25s, color .25s}
+  .pill b{font-weight:600}
+  .pill:hover{border-color:var(--saffron);transform:translateY(-3px);color:var(--saffron-deep)}
+
+  /* ---- cta ---- */
+  .cta{background:linear-gradient(150deg,#1a120b,#0E0B08);color:var(--cream);padding:clamp(72px,10vw,120px) 0;text-align:center}
+  .cta h2{font-weight:500;font-size:clamp(34px,5.5vw,64px);line-height:1.05;letter-spacing:-.025em}
+  .cta h2 em{font-style:italic;color:var(--saffron)}
+  .cta p{color:#B8AC9C;max-width:42ch;margin:22px auto 0;font-size:16px}
+  .form{margin:40px auto 0;max-width:480px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .form input{flex:1;min-width:220px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.16);
+    color:var(--cream);padding:15px 18px;border-radius:100px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s}
+  .form input::placeholder{color:#8a8073}
+  .form input:focus{border-color:var(--saffron)}
+  .seller{margin-top:20px;font-size:14.5px;color:#B8AC9C}
+  .seller a{color:var(--saffron);font-weight:600;border-bottom:1px solid rgba(255,138,61,.4);padding-bottom:1px}
+
+  /* ---- footer ---- */
+  footer{background:var(--ink);color:#8a8073;padding:40px 0 56px;border-top:1px solid rgba(255,255,255,.07)}
+  .foot-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+  .foot-brand{display:flex;align-items:center;gap:10px;color:var(--cream);font-family:'Fraunces';font-weight:600;font-size:20px}
+  .foot-note{font-size:13px;letter-spacing:.03em}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap nav-in">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 44 30" fill="none" aria-hidden="true">
+        <defs><clipPath id="nc-nav"><circle cx="15" cy="15" r="11"/></clipPath></defs>
+        <circle cx="29" cy="15" r="11" fill="#FF8A3D" clip-path="url(#nc-nav)"/>
+        <circle cx="15" cy="15" r="11" stroke="#0E0B08" stroke-width="2" fill="none"/>
+        <circle cx="29" cy="15" r="11" stroke="#0E0B08" stroke-width="2" fill="none"/>
+      </svg>
+      Neario
+    </div>
+    <div class="nav-right">
+      <span class="pre">Pre-launch</span>
+      <a href="#join" class="nav-cta">Get early access</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="reveal">
+    <div class="eyebrow"><span class="dot"></span> The discovery layer for local commerce</div>
+    <h1 class="head">The best shops near you<br>aren't on any <em>app.</em><br>Yet.</h1>
+    <p class="sub">Neario helps you discover — and buy from — the independent makers and shops inside your own locality.</p>
+    <div class="hero-actions">
+      <a href="#join"><button class="btn btn-primary">Get early access</button></a>
+      <a href="#what"><button class="btn btn-ghost">See what it is</button></a>
+    </div>
+    <div class="hero-foot">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF8A3D" stroke-width="2.2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+      Everything <span class="mono">right&nbsp;in&nbsp;your&nbsp;locality.</span>
+    </div>
+  </div>
+
+  <div class="stage reveal">
+    <div class="glow"></div>
+    <div class="phone">
+      <div class="screen">
+        <div class="s-top">
+          <div class="s-loc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+            Your locality · nearby makers
+          </div>
+          <div class="s-h">Makers &amp; shops<br>around you today</div>
+          <div class="s-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg>
+            Search bakes, tiffin, crafts…
+          </div>
+        </div>
+        <div class="chips">
+          <span class="chip on">All</span>
+          <span class="chip">Home kitchen</span>
+          <span class="chip">Bakes</span>
+          <span class="chip">Pickles</span>
+          <span class="chip">Crafts</span>
+        </div>
+        <div class="feed">
+          <div class="card">
+            <div class="thumb t1">M</div>
+            <div><div class="c-name">Meera's Home Bakery</div>
+              <div class="c-meta">Bakes · <span class="open">Open</span> · <span class="km mono">nearby</span></div></div>
+            <span class="c-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span>
+          </div>
+          <div class="card">
+            <div class="thumb t2">A</div>
+            <div><div class="c-name">Daily Tiffin by Anand</div>
+              <div class="c-meta">Tiffin · <span class="open">Open</span> · <span class="km mono">nearby</span></div></div>
+            <span class="c-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span>
+          </div>
+          <div class="card">
+            <div class="thumb t3">L</div>
+            <div><div class="c-name">Lata's Pickle Pantry</div>
+              <div class="c-meta">Pickles &amp; preserves · <span class="km mono">nearby</span></div></div>
+            <span class="c-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span>
+          </div>
+          <div class="card">
+            <div class="thumb t4">K</div>
+            <div><div class="c-name">Kiln &amp; Clay</div>
+              <div class="c-meta">Handmade pottery · <span class="km mono">nearby</span></div></div>
+            <span class="c-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="define wrap" id="what">
+  <div class="reveal">
+    <span class="klabel">What it is</span>
+    <h2>Neario makes the independent businesses around you <b>discoverable</b> — and lets you buy, maker to doorstep.</h2>
+  </div>
+  <div class="nots reveal">
+    <div class="not"><div class="x">✕</div><h4>Not quick commerce</h4><p>No dark stores, no ten-minute promises, no warehouse full of the same forty SKUs.</p></div>
+    <div class="not"><div class="x">✕</div><h4>Not another marketplace</h4><p>No faceless wall of resellers racing to the cheapest price. Real people, real kitchens, real shelves.</p></div>
+    <div class="not"><div class="x">✕</div><h4>Not a social feed</h4><p>No doomscroll. Every screen exists for one reason — to help you find something good, close by.</p></div>
+  </div>
+</section>
+
+<section class="manifesto">
+  <div class="wrap reveal">
+    <p class="dropcap">Every locality is quietly full of brilliant little businesses. The aunty whose pickles your whole lane swears by. The home baker taking orders over a stretched-thin WhatsApp. The potter two turns away you've simply never found.</p>
+    <p>They don't need a warehouse or a delivery fleet. They need to be <em>found</em> — by the people already living minutes from their door. That's the whole idea. Neario is the layer that puts your locality's makers on the map, and lets you buy from them directly.</p>
+  </div>
+</section>
+
+<section class="makers wrap">
+  <div class="makers-head reveal">
+    <h3>The people you'll finally find.</h3>
+    <p>A storefront they own, on a map sorted by closeness — never by who paid the most.</p>
+  </div>
+  <div class="mk-list">
+    <div class="mk reveal"><span class="idx">01</span><span class="who">The home baker</span><span class="what">Fresh bakes from a real kitchen down the road — not a commissary.</span></div>
+    <div class="mk reveal"><span class="idx">02</span><span class="who">The tiffin kitchen</span><span class="what">Honest daily meals, cooked close enough to still be warm.</span></div>
+    <div class="mk reveal"><span class="idx">03</span><span class="who">The pickle &amp; preserve maker</span><span class="what">The recipes that never made it past word of mouth — until now.</span></div>
+    <div class="mk reveal"><span class="idx">04</span><span class="who">The craft &amp; clay studio</span><span class="what">Made by hand, a short walk away, with a face behind it.</span></div>
+    <div class="mk reveal"><span class="idx">05</span><span class="who">The corner shop</span><span class="what">The store you walk past daily, now a tap away when you can't.</span></div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap reveal">
+    <blockquote>Trust over discounts. <em>Closeness</em> over clout. A storefront the seller actually owns — and a buyer who can find it.</blockquote>
+    <div class="by">— THE NEARIO PRINCIPLE</div>
+  </div>
+</section>
+
+<section class="how wrap">
+  <div class="reveal">
+    <span class="klabel">How it works</span>
+    <h3 style="margin-top:18px">Three taps, no middle layer.</h3>
+    <p class="lead">Discovery to doorstep, straight between you and the maker.</p>
+  </div>
+  <div class="steps">
+    <div class="step s1 reveal"><div class="n">1</div><h4>Discover what's around you</h4><p>Open Neario and see the makers and shops inside your locality — ranked by how close they are, not who bid highest.</p></div>
+    <div class="step s2 reveal"><div class="n">2</div><h4>Order straight from the maker</h4><p>Buy from their storefront, on their terms. No reseller in the middle, no warehouse in between.</p></div>
+    <div class="step s3 reveal"><div class="n">3</div><h4>They bring it over</h4><p>The seller handles delivery themselves — direct, local, and personal. The way the lane has always worked.</p></div>
+  </div>
+</section>
+
+<section class="princ wrap">
+  <div class="reveal">
+    <span class="klabel">What we stand on</span>
+    <div class="row" style="margin-top:22px">
+      <span class="pill"><b>Mobile-first</b></span>
+      <span class="pill"><b>Location-first</b></span>
+      <span class="pill"><b>Trust</b> over discounts</span>
+      <span class="pill">Sellers <b>own</b> their storefront</span>
+      <span class="pill">Direct, maker&nbsp;→&nbsp;you</span>
+      <span class="pill">No warehouses, no fleet</span>
+      <span class="pill">Simplicity over features</span>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="join">
+  <div class="wrap reveal">
+    <h2>Find what's <em>already</em><br>around you.</h2>
+    <p>Neario is launching soon, locality by locality. Get early access and we'll bring your area online first.</p>
+    <form class="form" onsubmit="event.preventDefault();this.querySelector('input').value='';this.querySelector('input').placeholder='Thanks — you’re on the list ✦';">
+      <input type="email" required placeholder="your@email.com" aria-label="Email" />
+      <button class="btn btn-primary" type="submit">Get early access</button>
+    </form>
+    <p class="seller">Make something your locality should know about? <a href="#join">Join the seller waitlist →</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div class="foot-brand">
+      <svg class="mark" viewBox="0 0 44 30" fill="none" aria-hidden="true">
+        <defs><clipPath id="nc-foot"><circle cx="15" cy="15" r="11"/></clipPath></defs>
+        <circle cx="29" cy="15" r="11" fill="#FF8A3D" clip-path="url(#nc-foot)"/>
+        <circle cx="15" cy="15" r="11" stroke="#FAF8F4" stroke-width="2" fill="none"/>
+        <circle cx="29" cy="15" r="11" stroke="#FAF8F4" stroke-width="2" fill="none"/>
+      </svg>
+      Neario
+    </div>
+    <div class="foot-note">Building the discovery layer for local commerce · Pre-launch</div>
+  </div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>12));
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.14});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i,4)*60)+'ms';io.observe(el);});
+</script>
+</body>
+</html>

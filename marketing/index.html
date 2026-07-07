@@ -26,7 +26,8 @@
   .disp{font-family:'Bricolage Grotesque',system-ui,sans-serif}
   .sit{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1240px;margin:0 auto;padding-left:clamp(34px,7vw,92px);padding-right:clamp(34px,7vw,92px)}
+  .wrap{max-width:1240px;margin:0 auto;padding-left:clamp(22px,7vw,92px);padding-right:clamp(22px,7vw,92px)}
+  @media(max-width:400px){.wrap{padding-left:18px;padding-right:18px}}
 
   body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.03;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -163,7 +164,7 @@
   .sit-acc{color:var(--saffron-deep)}
 
   /* ---------- define ---------- */
-  .define{padding:118px 0 40px}
+  .define{padding-top:118px;padding-bottom:40px}
   .define h2{font-size:clamp(32px,4.6vw,56px);max-width:20ch;margin-top:24px}
   .neg{margin-top:58px;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
   .neg-line{position:relative;display:inline-block;font-family:'Bricolage Grotesque';font-weight:700;
@@ -190,7 +191,7 @@
   .in .neg-note{opacity:1}
 
   /* ---------- buyers bento ---------- */
-  .buyers{padding:116px 0 20px}
+  .buyers{padding-top:116px;padding-bottom:20px}
   .buyers-head h3{font-size:clamp(30px,4vw,48px);max-width:18ch;margin-top:22px}
   .buyers-head p{color:var(--muted);font-size:15.5px;margin-top:12px;max-width:40ch}
   .bento{margin-top:52px;display:grid;gap:14px}
@@ -242,7 +243,7 @@
   }
 
   /* ---------- manifesto ---------- */
-  .manifesto{padding:126px 0}
+  .manifesto{padding-top:126px;padding-bottom:126px}
   .manifesto .wrap{max-width:840px}
   .manifesto p{font-family:'Bricolage Grotesque';font-weight:500;font-size:clamp(22px,2.8vw,30px);line-height:1.44;color:var(--ink2);letter-spacing:-.015em}
   .manifesto p+p{margin-top:28px}
@@ -251,7 +252,7 @@
   .dropcap::first-letter{font-family:'Instrument Serif';font-style:italic;font-size:4.5em;line-height:.78;float:left;margin:12px 18px 0 0;color:var(--saffron-deep)}
 
   /* ---------- makers ---------- */
-  .makers{padding:16px 0 126px}
+  .makers{padding-top:16px;padding-bottom:126px}
   .makers-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px}
   .makers-head h3{font-size:clamp(30px,3.9vw,46px);max-width:18ch;margin-top:22px}
   .makers-head p{color:var(--muted);font-size:15.5px;max-width:32ch}
@@ -293,7 +294,7 @@
   .sellers .btn{margin-top:30px}
 
   /* ---------- how ---------- */
-  .how{padding:126px 0 40px}
+  .how{padding-top:126px;padding-bottom:40px}
   .how h3{font-size:clamp(30px,4vw,48px);margin-top:22px}
   .how .lead{color:var(--muted);max-width:42ch;margin-top:12px;font-size:16px}
   .rail{display:none}
@@ -344,7 +345,7 @@
   .m-status{text-align:center;font-family:'Bricolage Grotesque';font-weight:700;font-size:13.5px;color:var(--green)}
 
   /* ---------- faq ---------- */
-  .faq{padding:100px 0 126px}
+  .faq{padding-top:100px;padding-bottom:126px}
   .faq .wrap{max-width:840px}
   .faq h3{font-size:clamp(28px,3.6vw,42px);margin-top:22px}
   .qa-list{margin-top:44px;border-top:1px solid var(--line)}

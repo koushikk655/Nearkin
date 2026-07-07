@@ -165,17 +165,29 @@
   /* ---------- define ---------- */
   .define{padding:118px 0 40px}
   .define h2{font-size:clamp(32px,4.6vw,56px);max-width:20ch;margin-top:24px}
-  .nots{margin-top:54px;display:grid;gap:14px}
-  @media(min-width:760px){.nots{grid-template-columns:repeat(3,1fr)}}
-  .not{border-radius:24px;padding:34px 30px 38px;border:1px solid transparent;
-    transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
-  .not:hover{transform:translateY(-7px);box-shadow:0 26px 48px -26px rgba(40,26,12,.22)}
-  .not.c1{background:var(--saffron-soft)} .not.c2{background:var(--green-soft)} .not.c3{background:var(--cream2)}
-  .not .x{font-family:'Bricolage Grotesque';font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
-    display:inline-block;padding:7px 13px;border-radius:100px;background:rgba(20,18,16,.08)}
-  .not.c1 .x{color:var(--saffron-deep)} .not.c2 .x{color:var(--green)} .not.c3 .x{color:var(--ink2)}
-  .not h4{font-family:'Bricolage Grotesque';font-weight:700;font-size:21px;margin:18px 0 8px;letter-spacing:-.02em}
-  .not p{font-size:15px;color:var(--ink2)}
+  .neg{margin-top:58px;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+  .neg-line{position:relative;display:inline-block;font-family:'Bricolage Grotesque';font-weight:700;
+    font-size:clamp(23px,3.5vw,42px);letter-spacing:-.025em;line-height:1.15;color:#A79C8B;
+    transition:color .6s}
+  .neg-line::after{content:"";position:absolute;left:-.15em;right:-.25em;top:52%;height:.09em;min-height:3px;border-radius:4px;
+    background:var(--saffron-deep);transform:scaleX(0) rotate(-1deg);transform-origin:left center;
+    transition:transform .65s cubic-bezier(.7,0,.2,1)}
+  .in .neg-line::after{transform:scaleX(1) rotate(-1deg)}
+  .in .neg-line{color:#B4AA99}
+  .in .neg-line:nth-of-type(1)::after{transition-delay:.15s}
+  .in .neg-line:nth-of-type(2)::after{transition-delay:.5s}
+  .in .neg-line:nth-of-type(3)::after{transition-delay:.85s}
+  .neg-yes{margin-top:20px;font-family:'Bricolage Grotesque';font-weight:800;letter-spacing:-.028em;line-height:1.08;
+    font-size:clamp(30px,4.6vw,56px);color:var(--ink);opacity:0;transform:translateY(16px);
+    transition:opacity .7s cubic-bezier(.2,.7,.2,1) 1.2s,transform .7s cubic-bezier(.2,.7,.2,1) 1.2s}
+  .in .neg-yes{opacity:1;transform:none}
+  .neg-yes .mkr{position:relative;white-space:nowrap}
+  .neg-yes .mkr::after{content:"";position:absolute;left:0;right:0;bottom:.02em;height:.3em;z-index:-1;border-radius:3px;
+    background:linear-gradient(120deg,rgba(255,122,47,.5),rgba(255,122,47,.32));
+    transform:scaleX(0);transform-origin:left;transition:transform .8s cubic-bezier(.2,.7,.2,1) 1.75s}
+  .in .neg-yes .mkr::after{transform:scaleX(1)}
+  .neg-note{margin-top:18px;color:var(--muted);font-size:15.5px;max-width:52ch;opacity:0;transition:opacity .8s 2s}
+  .in .neg-note{opacity:1}
 
   /* ---------- buyers bento ---------- */
   .buyers{padding:116px 0 20px}
@@ -471,10 +483,12 @@
     <span class="klabel">What Neario is</span>
     <h2 class="sec">The independent businesses around you, finally <span class="uline">discoverable</span> — and a tap away.</h2>
   </div>
-  <div class="nots reveal">
-    <div class="not c1"><span class="x">Not this</span><h4>Quick commerce</h4><p>No dark stores. No 10-minute anxiety. No warehouse full of the same forty things everyone sells.</p></div>
-    <div class="not c2"><span class="x">Not this</span><h4>Another marketplace</h4><p>No faceless resellers racing to the cheapest price. Real people, real kitchens, real shelves.</p></div>
-    <div class="not c3"><span class="x">Not this</span><h4>A social feed</h4><p>Nothing to doomscroll. Every screen exists to help you find something good, close by.</p></div>
+  <div class="neg reveal">
+    <span class="neg-line">Another 10-minute delivery app.</span>
+    <span class="neg-line">A warehouse with a website.</span>
+    <span class="neg-line">A feed fighting for your attention.</span>
+    <div class="neg-yes">Just your locality's makers — <span class="mkr">on a map.</span></div>
+    <p class="neg-note">No dark stores. No resellers racing to the cheapest price. No doomscroll. Real people, real kitchens, real workshops — discoverable, and a tap away.</p>
   </div>
 </section>
 

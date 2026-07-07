@@ -148,7 +148,7 @@
   /* ---------- shared ---------- */
   section{position:relative}
   .reveal{opacity:0;transform:translateY(34px)}
-  .reveal.in{margin-left:4px;opacity:1;transform:none;transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none;transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
   .klabel{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--saffron-deep);
     display:inline-flex;align-items:center;gap:10px}
   .klabel::before{content:"";width:26px;height:2px;background:var(--saffron)}
@@ -173,6 +173,58 @@
   .not.c1 .x{color:var(--saffron-deep)} .not.c2 .x{color:var(--green)} .not.c3 .x{color:var(--ink2)}
   .not h4{font-family:'Bricolage Grotesque';font-weight:700;font-size:21px;margin:18px 0 8px;letter-spacing:-.02em}
   .not p{font-size:15px;color:var(--ink2)}
+
+  /* ---------- buyers bento ---------- */
+  .buyers{padding:116px 0 20px}
+  .buyers-head h3{font-size:clamp(30px,4vw,48px);max-width:18ch;margin-top:22px}
+  .buyers-head p{color:var(--muted);font-size:15.5px;margin-top:12px;max-width:40ch}
+  .bento{margin-top:52px;display:grid;gap:14px}
+  @media(min-width:720px){.bento{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1020px){.bento{grid-template-columns:repeat(4,1fr)}.b-wide{grid-column:span 2}}
+  .b-card{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:34px 30px 36px;position:relative;overflow:hidden;
+    transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+  .b-card:hover{transform:translateY(-7px);box-shadow:0 28px 50px -28px rgba(40,26,12,.25)}
+  .b-card .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;margin-bottom:20px;
+    transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+  .b-card:hover .ic{transform:rotate(-8deg) scale(1.08)}
+  .ic.i1{background:var(--saffron-soft);color:var(--saffron-deep)}
+  .ic.i2{background:var(--green-soft);color:var(--green)}
+  .b-card h4{font-family:'Bricolage Grotesque';font-weight:700;font-size:20px;letter-spacing:-.02em;margin-bottom:8px}
+  .b-card p{font-size:14.5px;color:var(--ink2)}
+  .b-wide{background:var(--green);border-color:var(--green);color:#F2F7F1}
+  .b-wide h4{color:#fff;font-size:24px}
+  .b-wide p{color:#C9D8C9;font-size:15px;max-width:44ch}
+  .b-wide:hover{box-shadow:0 30px 56px -26px rgba(18,53,40,.5)}
+  .b-wide .rings{position:absolute;right:-46px;top:-46px;width:170px;height:170px;opacity:.5;pointer-events:none}
+  .b-wide .rings circle{fill:none;stroke:var(--saffron);stroke-width:1.5;transform-origin:center;animation:ripple 3.6s ease-out infinite}
+  .b-wide .rings circle:nth-child(2){animation-delay:1.2s}
+  .b-wide .rings circle:nth-child(3){animation-delay:2.4s}
+  @keyframes ripple{0%{transform:scale(.3);opacity:1}100%{transform:scale(1);opacity:0}}
+  .b-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .b-chips span{font-size:12px;font-weight:700;padding:7px 13px;border-radius:100px;background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.16);color:#EAF2EA}
+
+  /* ---------- seller journey ---------- */
+  .journey{margin-top:78px;position:relative}
+  .j-title{font-family:'Bricolage Grotesque';font-weight:700;font-size:clamp(22px,2.8vw,30px);letter-spacing:-.02em;color:#fff}
+  .j-title .sit{color:#FFB07A}
+  .j-sub{color:#BFCFBF;font-size:14.5px;margin-top:8px}
+  .j-steps{margin-top:44px;display:grid;gap:34px;position:relative}
+  .j-steps::before{content:"";position:absolute;left:21px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.25) 0 6px,transparent 6px 13px)}
+  .j-step{position:relative;padding-left:66px}
+  .j-dot{position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;background:var(--saffron);color:#221000;
+    font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;display:grid;place-items:center;
+    box-shadow:0 0 0 6px rgba(255,122,47,.16)}
+  .j-step h5{font-family:'Bricolage Grotesque';font-weight:700;font-size:18px;letter-spacing:-.01em;color:#fff;padding-top:9px}
+  .j-step p{font-size:14.5px;color:#BFCFBF;margin-top:6px;max-width:34ch}
+  @media(min-width:880px){
+    .j-steps{grid-template-columns:repeat(4,1fr);gap:26px}
+    .j-steps::before{left:22px;right:8%;top:21px;bottom:auto;width:auto;height:2px;
+      background:repeating-linear-gradient(90deg,rgba(255,255,255,.25) 0 6px,transparent 6px 13px)}
+    .j-step{padding-left:0;padding-top:66px}
+    .j-dot{top:0;left:0}
+  }
 
   /* ---------- manifesto ---------- */
   .manifesto{padding:126px 0}
@@ -391,6 +443,43 @@
   </div>
 </section>
 
+<section class="buyers wrap" id="buyers">
+  <div class="buyers-head reveal">
+    <span class="klabel">For buyers</span>
+    <h3 class="sec">Your whole locality, <span class="sit sit-acc">in your pocket.</span></h3>
+    <p>No more asking around in three WhatsApp groups for "a good home baker nearby". It's all here.</p>
+  </div>
+  <div class="bento">
+    <div class="b-card b-wide reveal">
+      <svg class="rings" viewBox="0 0 170 170" aria-hidden="true"><circle cx="85" cy="85" r="80"/><circle cx="85" cy="85" r="80"/><circle cx="85" cy="85" r="80"/></svg>
+      <div class="ic i1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></div>
+      <h4>Every maker, one app</h4>
+      <p>The baker in the next lane. The tiffin uncle. The pickle aunty. All of them together — searchable, browsable, orderable. No more running around.</p>
+      <div class="b-chips"><span>Bakes</span><span>Tiffin</span><span>Pickles</span><span>Crafts</span><span>Flowers</span><span>+ more</span></div>
+    </div>
+    <div class="b-card reveal">
+      <div class="ic i2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M7 8c0-1.7 2.2-3 5-3s5 1.3 5 3-2.2 3-5 3-5 1.3-5 3 2.2 3 5 3 5-1.3 5-3"/></svg></div>
+      <h4>Fair prices, naturally</h4>
+      <p>When every maker around you is visible, honest pricing follows. Competition does what middlemen never did.</p>
+    </div>
+    <div class="b-card reveal">
+      <div class="ic i1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+      <h4>Fresher than any warehouse</h4>
+      <p>Made minutes away and brought over by the maker — not trucked across town from a dark store.</p>
+    </div>
+    <div class="b-card reveal">
+      <div class="ic i2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></div>
+      <h4>Neighbour-verified trust</h4>
+      <p>Ratings from people who actually live around you. Word of mouth — upgraded.</p>
+    </div>
+    <div class="b-card reveal">
+      <div class="ic i1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></div>
+      <h4>Your lane's economy wins</h4>
+      <p>Every order keeps money inside your locality — with the people who make it worth living in.</p>
+    </div>
+  </div>
+</section>
+
 <section class="manifesto">
   <div class="wrap reveal">
     <p class="dropcap">Every locality is quietly full of brilliant little businesses. The aunty whose pickles your whole lane swears by. The home baker running on a stretched-thin WhatsApp. The potter two turns away you've simply never found.</p>
@@ -436,6 +525,16 @@
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div>
         <div><h5>Deliver on your terms</h5><p>You know your lanes better than any fleet. You set the range, you make the drop.</p></div>
       </div>
+    </div>
+  </div>
+  <div class="wrap journey reveal">
+    <div class="j-title">Opening shop takes <span class="sit">one afternoon.</span></div>
+    <p class="j-sub">Here's how it'll work when your area opens:</p>
+    <div class="j-steps">
+      <div class="j-step"><span class="j-dot">1</span><h5>Set up your storefront</h5><p>Name, photo, what you make. Ten minutes on your phone — no laptop, no paperwork marathon.</p></div>
+      <div class="j-step"><span class="j-dot">2</span><h5>List what you sell</h5><p>Your items, your prices, your timings. You stay in control of all of it.</p></div>
+      <div class="j-step"><span class="j-dot">3</span><h5>Get discovered</h5><p>Neighbours searching nearby see you — closeness ranks you, not ad budgets.</p></div>
+      <div class="j-step"><span class="j-dot">4</span><h5>Sell &amp; deliver your way</h5><p>Accept orders in a tap, deliver like you always have. We stay out of your kitchen.</p></div>
     </div>
   </div>
 </section>

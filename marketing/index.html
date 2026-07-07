@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Neario — the discovery layer for local commerce</title>
-<meta name="description" content="Neario puts the home bakers, tiffin kitchens, artisans and craft makers around you on the map — and lets you buy from them directly. Coming soon." />
+<meta name="description" content="Neario puts the gift makers, custom bakers, artisans and home businesses around you on the map — and lets you buy from them directly. Coming soon." />
 <meta name="theme-color" content="#FAF6EF" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141210'/%3E%3Cdefs%3E%3CclipPath id='c'%3E%3Ccircle cx='24' cy='32' r='15'/%3E%3C/clipPath%3E%3C/defs%3E%3Ccircle cx='40' cy='32' r='15' fill='%23FF7A2F' clip-path='url(%23c)'/%3E%3Ccircle cx='24' cy='32' r='15' fill='none' stroke='%23FAF6EF' stroke-width='3.5'/%3E%3Ccircle cx='40' cy='32' r='15' fill='none' stroke='%23FAF6EF' stroke-width='3.5'/%3E%3C/svg%3E" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141210'/%3E%3Cpath d='M20 46 V27 Q20 16 32 16 Q44 16 44 27 V46' stroke='%23FAF6EF' stroke-width='5' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='20' cy='46' r='5.5' fill='%23FF7A2F'/%3E%3Ccircle cx='44' cy='46' r='5.5' fill='%237BB661'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Serif:ital@1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -36,7 +36,7 @@
   nav.scrolled{background:rgba(250,246,239,.85);backdrop-filter:blur(14px) saturate(1.5);border-color:var(--line)}
   .nav-in{display:flex;align-items:center;justify-content:space-between;height:78px}
   .brand{display:flex;align-items:center;gap:11px;font-family:'Bricolage Grotesque';font-weight:700;font-size:24px;letter-spacing:-.02em}
-  .mark{width:36px;height:27px;flex:none}
+  .mark{width:31px;height:26px;flex:none}
   .nav-right{display:flex;align-items:center;gap:18px}
   .pre{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700;
     border:1.5px solid rgba(28,74,56,.35);border-radius:100px;padding:6px 13px}
@@ -281,20 +281,52 @@
   .how{padding:126px 0 40px}
   .how h3{font-size:clamp(30px,4vw,48px);margin-top:22px}
   .how .lead{color:var(--muted);max-width:42ch;margin-top:12px;font-size:16px}
-  .steps{margin-top:60px;display:grid;gap:16px}
-  @media(min-width:860px){.steps{grid-template-columns:repeat(3,1fr);gap:20px}}
-  .step{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:36px 32px 40px;position:relative;overflow:hidden;
+  .rail{display:none}
+  @media(min-width:860px){
+    .rail{display:block;position:relative;height:2px;background:var(--line);border-radius:2px;margin:52px 0 28px;overflow:hidden}
+    .rail .comet{position:absolute;top:0;left:-70px;width:70px;height:100%;background:linear-gradient(90deg,transparent,var(--saffron));animation:comet 3.4s linear infinite}
+  }
+  @keyframes comet{to{left:100%}}
+  .flow{margin-top:34px;display:grid;gap:16px}
+  @media(max-width:859px){.flow{margin-top:54px}}
+  @media(min-width:860px){.flow{grid-template-columns:repeat(3,1fr);gap:20px}}
+  .f-card{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:26px 26px 34px;position:relative;overflow:hidden;
     transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
-  .step:hover{transform:translateY(-8px);box-shadow:0 30px 54px -28px rgba(40,26,12,.25)}
-  .step::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--saffron);
-    transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-  .step:nth-child(2)::after{background:var(--green)}
-  .step:hover::after{transform:scaleX(1)}
-  .step .n{font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;letter-spacing:.1em;color:var(--saffron-deep);
-    display:inline-block;padding:8px 15px;border-radius:100px;background:var(--saffron-soft)}
-  .step:nth-child(2) .n{color:var(--green);background:var(--green-soft)}
-  .step h4{font-family:'Bricolage Grotesque';font-weight:700;font-size:21px;margin:22px 0 10px;letter-spacing:-.02em}
-  .step p{color:var(--ink2);font-size:15.5px}
+  .f-card:hover{transform:translateY(-9px) rotate(-.7deg);box-shadow:0 32px 56px -28px rgba(40,26,12,.28)}
+  .f-card:nth-child(2):hover{transform:translateY(-9px) rotate(.7deg)}
+  .f-card .ghost{position:absolute;top:6px;right:16px;font-family:'Bricolage Grotesque';font-weight:800;font-size:88px;line-height:1;
+    color:transparent;-webkit-text-stroke:1.5px var(--line);pointer-events:none;transition:-webkit-text-stroke-color .4s}
+  .f-card:hover .ghost{-webkit-text-stroke-color:rgba(255,122,47,.6)}
+  .f-card h4{font-family:'Bricolage Grotesque';font-weight:700;font-size:21px;margin:22px 0 9px;letter-spacing:-.02em;position:relative}
+  .f-card>p{color:var(--ink2);font-size:15px;position:relative}
+  /* mini app screens */
+  .mini{background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:14px;min-height:126px;position:relative;overflow:hidden;margin-top:38px}
+  .mini-bar{background:#fff;border:1px solid var(--line);border-radius:100px;padding:9px 13px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink2)}
+  .mini-bar svg{width:13px;height:13px;color:var(--saffron-deep);flex:none}
+  .mcaret{width:1.5px;height:12px;background:var(--saffron-deep);animation:blink 1s steps(1) infinite}
+  .mrow{display:block;height:11px;border-radius:6px;margin-top:10px;
+    background:linear-gradient(90deg,var(--cream2) 25%,#E6DCCB 42%,var(--cream2) 60%);background-size:200% 100%;animation:shim 1.9s linear infinite}
+  @keyframes shim{to{background-position:-200% 0}}
+  .w70{width:70%}.w50{width:50%}.w62{width:62%}
+  .mprod{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+  .mprod+.mprod{margin-top:9px;opacity:.55}
+  .mthumb{width:38px;height:38px;border-radius:10px;flex:none;background:linear-gradient(140deg,#F2994A,#C45D9A)}
+  .mthumb.g2{background:linear-gradient(140deg,#5FA97A,#1C4A38)}
+  .mlines{flex:1}
+  .mlines span{display:block;height:8px;border-radius:5px;background:var(--cream2)}
+  .mlines span+span{margin-top:6px;width:56%}
+  .madd{background:var(--saffron);color:#221000;font-family:'Bricolage Grotesque';font-weight:800;font-size:11px;
+    padding:8px 14px;border-radius:100px;flex:none;animation:press 2.6s cubic-bezier(.2,.8,.2,1) infinite}
+  @keyframes press{0%,74%,100%{transform:scale(1)}84%{transform:scale(.88)}}
+  .m-badge{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+    font-size:12px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 4px rgba(28,74,56,.14)}
+  .m-route{padding:10px 6px 2px}
+  .m-ends{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+  .m-track{position:relative;height:2px;background:var(--line);border-radius:2px;margin:20px 8px 22px}
+  .m-dot{position:absolute;top:50%;left:0;width:14px;height:14px;border-radius:50%;background:var(--saffron);
+    transform:translate(-50%,-50%);box-shadow:0 0 0 5px rgba(255,122,47,.18);animation:ride 4.2s cubic-bezier(.45,0,.35,1) infinite}
+  @keyframes ride{0%{left:0}46%,54%{left:52%}100%{left:100%}}
+  .m-status{text-align:center;font-family:'Bricolage Grotesque';font-weight:700;font-size:13.5px;color:var(--green)}
 
   /* ---------- faq ---------- */
   .faq{padding:100px 0 126px}
@@ -342,11 +374,10 @@
 <nav id="nav">
   <div class="wrap nav-in">
     <a class="brand" href="#top">
-      <svg class="mark" viewBox="0 0 44 30" fill="none" aria-hidden="true">
-        <defs><clipPath id="nc-nav"><circle cx="15" cy="15" r="11"/></clipPath></defs>
-        <circle cx="29" cy="15" r="11" fill="#FF7A2F" clip-path="url(#nc-nav)"/>
-        <circle cx="15" cy="15" r="11" stroke="#141210" stroke-width="2" fill="none"/>
-        <circle cx="29" cy="15" r="11" stroke="#141210" stroke-width="2" fill="none"/>
+      <svg class="mark" viewBox="0 0 40 34" fill="none" aria-hidden="true">
+        <path d="M8 29 V14 Q8 6.5 20 6.5 Q32 6.5 32 14 V29" stroke="#141210" stroke-width="3.6" stroke-linecap="round"/>
+        <circle cx="8" cy="29" r="4" fill="#FF7A2F"/>
+        <circle cx="32" cy="29" r="4" fill="#1C4A38"/>
       </svg>
       Neario
     </a>
@@ -365,7 +396,7 @@
       <span class="h-line"><span>your locality never</span></span>
       <span class="h-line"><span>made it <span class="sit">online.</span></span></span>
     </h1>
-    <p class="sub">Neario puts the <b>home bakers, tiffin kitchens, artisans and craft makers</b> around you on the map — and lets you buy from them, directly.</p>
+    <p class="sub">Neario puts the <b>gift makers, custom bakers, artisans and home businesses</b> around you on the map — and lets you buy from them, directly.</p>
     <div class="hero-actions">
       <a href="#join" class="btn btn-saffron"><span>Get early access</span> <span class="arr">→</span></a>
       <a href="#how" class="btn btn-ghost"><span>See how it works</span></a>
@@ -392,24 +423,24 @@
           </div>
         </div>
         <div class="chips">
-          <span class="chip on">All</span><span class="chip">Home kitchen</span><span class="chip">Bakes</span><span class="chip">Pickles</span><span class="chip">Crafts</span>
+          <span class="chip on">All</span><span class="chip">Gifting</span><span class="chip">Custom</span><span class="chip">Handmade</span><span class="chip">Bakes</span>
         </div>
         <div class="feed">
           <div class="card"><div class="thumb t1">M</div>
             <div><div class="c-name">Meera's Home Bakery</div>
-              <div class="c-meta">Bakes · <span class="open">Open now</span></div></div>
+              <div class="c-meta">Custom cakes · <span class="open">Open now</span></div></div>
             <span class="heart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span></div>
-          <div class="card"><div class="thumb t2">A</div>
-            <div><div class="c-name">Daily Tiffin by Anand</div>
-              <div class="c-meta">Tiffin · <span class="open">Open now</span></div></div>
+          <div class="card"><div class="thumb t3">R</div>
+            <div><div class="c-name">Wrapped by Ritu</div>
+              <div class="c-meta">Gift hampers · <span class="open">Open now</span></div></div>
             <span class="heart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span></div>
-          <div class="card"><div class="thumb t3">L</div>
-            <div><div class="c-name">Lata's Pickle Pantry</div>
-              <div class="c-meta">Pickles &amp; preserves</div></div>
-            <span class="heart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span></div>
-          <div class="card"><div class="thumb t4">K</div>
+          <div class="card"><div class="thumb t2">K</div>
             <div><div class="c-name">Kiln &amp; Clay</div>
               <div class="c-meta">Handmade pottery</div></div>
+            <span class="heart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span></div>
+          <div class="card"><div class="thumb t4">S</div>
+            <div><div class="c-name">Stitch by Sana</div>
+              <div class="c-meta">Made-to-measure</div></div>
             <span class="heart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.6 3-3.5 3-5.7A4.3 4.3 0 0 0 12 6 4.3 4.3 0 0 0 2 8.3C2 12 7 16.4 12 20c2-1.5 4.7-3.6 7-6Z"/></svg></span></div>
         </div>
         <div class="toast">
@@ -423,11 +454,11 @@
 
 <div class="marquee" aria-hidden="true">
   <div class="m-track" id="mtrack">
-    <span class="m-item">Home bakes <i>✦</i></span><span class="m-item gr">Daily tiffin <i>✦</i></span>
-    <span class="m-item">Pickles &amp; preserves <i>✦</i></span><span class="m-item gr">Handmade craft <i>✦</i></span>
-    <span class="m-item">Corner stores <i>✦</i></span><span class="m-item gr">Fresh flowers <i>✦</i></span>
-    <span class="m-item">Boutique tailors <i>✦</i></span><span class="m-item gr">Homemade snacks <i>✦</i></span>
-    <span class="m-item">Local artisans <i>✦</i></span><span class="m-item gr">Pottery &amp; clay <i>✦</i></span>
+    <span class="m-item">Custom gifts <i>✦</i></span><span class="m-item gr">Handmade decor <i>✦</i></span>
+    <span class="m-item">Personalised hampers <i>✦</i></span><span class="m-item gr">Artisan bakes <i>✦</i></span>
+    <span class="m-item">Pottery &amp; clay <i>✦</i></span><span class="m-item gr">Fresh flowers <i>✦</i></span>
+    <span class="m-item">Boutique tailors <i>✦</i></span><span class="m-item gr">Home kitchens <i>✦</i></span>
+    <span class="m-item">Return gifts <i>✦</i></span><span class="m-item gr">Pickles &amp; preserves <i>✦</i></span>
   </div>
 </div>
 
@@ -454,8 +485,8 @@
       <svg class="rings" viewBox="0 0 170 170" aria-hidden="true"><circle cx="85" cy="85" r="80"/><circle cx="85" cy="85" r="80"/><circle cx="85" cy="85" r="80"/></svg>
       <div class="ic i1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></div>
       <h4>Every maker, one app</h4>
-      <p>The baker in the next lane. The tiffin uncle. The pickle aunty. All of them together — searchable, browsable, orderable. No more running around.</p>
-      <div class="b-chips"><span>Bakes</span><span>Tiffin</span><span>Pickles</span><span>Crafts</span><span>Flowers</span><span>+ more</span></div>
+      <p>The hamper maker in the next lane. The custom-cake baker. The potter you never knew was there. All of them together — searchable, browsable, orderable. No more running around.</p>
+      <div class="b-chips"><span>Gifting</span><span>Custom</span><span>Handmade</span><span>Bakes</span><span>Decor</span><span>+ more</span></div>
     </div>
     <div class="b-card reveal">
       <div class="ic i2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M7 8c0-1.7 2.2-3 5-3s5 1.3 5 3-2.2 3-5 3-5 1.3-5 3 2.2 3 5 3 5-1.3 5-3"/></svg></div>
@@ -482,7 +513,7 @@
 
 <section class="manifesto">
   <div class="wrap reveal">
-    <p class="dropcap">Every locality is quietly full of brilliant little businesses. The aunty whose pickles your whole lane swears by. The home baker running on a stretched-thin WhatsApp. The potter two turns away you've simply never found.</p>
+    <p class="dropcap">Every locality is quietly full of brilliant little makers. The one who wraps birthday hampers your friends keep asking about. The baker whose custom cakes never made it past a WhatsApp status. The potter two turns away you've simply never found.</p>
     <p>They don't need a warehouse or a delivery fleet. They need to be <span class="grn">found</span> — by the people already living minutes from their door. That's what we're building. <span class="sit">Neario is the layer that puts your locality's makers on the map.</span></p>
   </div>
 </section>
@@ -496,11 +527,11 @@
     <p>A storefront they own, discovered by closeness — never by who paid for the top slot.</p>
   </div>
   <div class="mk-list">
-    <div class="mk reveal"><span class="idx">01</span><span class="who">The home baker</span><span class="what">Fresh bakes from a real kitchen down the road</span><span class="go-arr">→</span></div>
-    <div class="mk reveal"><span class="idx">02</span><span class="who">The tiffin kitchen</span><span class="what">Honest daily meals, still warm when they arrive</span><span class="go-arr">→</span></div>
-    <div class="mk reveal"><span class="idx">03</span><span class="who">The pickle &amp; preserve maker</span><span class="what">Recipes that never made it past word of mouth</span><span class="go-arr">→</span></div>
-    <div class="mk reveal"><span class="idx">04</span><span class="who">The craft &amp; clay studio</span><span class="what">Made by hand, a short walk away</span><span class="go-arr">→</span></div>
-    <div class="mk reveal"><span class="idx">05</span><span class="who">The corner shop</span><span class="what">The store you walk past daily — now a tap away</span><span class="go-arr">→</span></div>
+    <div class="mk reveal"><span class="idx">01</span><span class="who">The gift &amp; hamper maker</span><span class="what">Personalised boxes for birthdays, weddings and festivals</span><span class="go-arr">→</span></div>
+    <div class="mk reveal"><span class="idx">02</span><span class="who">The custom-cake baker</span><span class="what">Theme cakes and fresh bakes from a kitchen down the road</span><span class="go-arr">→</span></div>
+    <div class="mk reveal"><span class="idx">03</span><span class="who">The craft &amp; clay studio</span><span class="what">Handmade decor, made a short walk away</span><span class="go-arr">→</span></div>
+    <div class="mk reveal"><span class="idx">04</span><span class="who">The boutique tailor</span><span class="what">Made-to-measure, stitched in your locality</span><span class="go-arr">→</span></div>
+    <div class="mk reveal"><span class="idx">05</span><span class="who">The home kitchen</span><span class="what">Daily meals, pickles and preserves — the classics live here too</span><span class="go-arr">→</span></div>
   </div>
 </section>
 
@@ -545,10 +576,42 @@
     <h3 class="sec">Three taps. <span class="sit sit-acc">No middle layer.</span></h3>
     <p class="lead">From discovery to doorstep — straight between you and the maker.</p>
   </div>
-  <div class="steps">
-    <div class="step reveal"><span class="n">STEP 01</span><h4>Discover what's around</h4><p>Open Neario and see the makers and shops in your locality — ranked by closeness, never by who bid highest.</p></div>
-    <div class="step reveal"><span class="n">STEP 02</span><h4>Order from the maker</h4><p>Buy from their storefront, on their terms. No reseller in the middle, no warehouse in between.</p></div>
-    <div class="step reveal"><span class="n">STEP 03</span><h4>They bring it over</h4><p>The seller delivers it themselves — direct, local and personal. The way the lane has always worked.</p></div>
+  <div class="rail" aria-hidden="true"><span class="comet"></span></div>
+  <div class="flow">
+    <div class="f-card reveal">
+      <span class="ghost">01</span>
+      <div class="mini" aria-hidden="true">
+        <div class="mini-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg>
+          <span data-swap="birthday hampers|custom cakes|handmade mugs|return gifts">birthday hampers</span><span class="mcaret"></span>
+        </div>
+        <span class="mrow w70"></span><span class="mrow w50"></span><span class="mrow w62"></span>
+      </div>
+      <h4>Discover what's around</h4>
+      <p>Search anything — the makers and shops of your locality appear, ranked by closeness, never by ad budgets.</p>
+    </div>
+    <div class="f-card reveal">
+      <span class="ghost">02</span>
+      <div class="mini" aria-hidden="true">
+        <span class="m-badge" data-swap="1|2|3">1</span>
+        <div class="mprod"><span class="mthumb"></span><div class="mlines"><span></span><span></span></div><span class="madd">ADD</span></div>
+        <div class="mprod"><span class="mthumb g2"></span><div class="mlines"><span></span><span></span></div></div>
+      </div>
+      <h4>Order from the maker</h4>
+      <p>Buy from their storefront, on their terms. No reseller in the middle, no warehouse in between.</p>
+    </div>
+    <div class="f-card reveal">
+      <span class="ghost">03</span>
+      <div class="mini" aria-hidden="true">
+        <div class="m-route">
+          <div class="m-ends"><span>MAKER</span><span>YOU</span></div>
+          <div class="m-track"><span class="m-dot"></span></div>
+          <div class="m-status" data-swap="Order confirmed ✓|Being made with care|On its way to you|Delivered — enjoy!">Order confirmed ✓</div>
+        </div>
+      </div>
+      <h4>They bring it over</h4>
+      <p>The seller delivers it themselves — direct, local and personal. The way the lane has always worked.</p>
+    </div>
   </div>
 </section>
 
@@ -596,11 +659,10 @@
 <footer>
   <div class="wrap foot-in">
     <div class="foot-brand">
-      <svg class="mark" viewBox="0 0 44 30" fill="none" aria-hidden="true">
-        <defs><clipPath id="nc-foot"><circle cx="15" cy="15" r="11"/></clipPath></defs>
-        <circle cx="29" cy="15" r="11" fill="#FF7A2F" clip-path="url(#nc-foot)"/>
-        <circle cx="15" cy="15" r="11" stroke="#FAF6EF" stroke-width="2" fill="none"/>
-        <circle cx="29" cy="15" r="11" stroke="#FAF6EF" stroke-width="2" fill="none"/>
+      <svg class="mark" viewBox="0 0 40 34" fill="none" aria-hidden="true">
+        <path d="M8 29 V14 Q8 6.5 20 6.5 Q32 6.5 32 14 V29" stroke="#FAF6EF" stroke-width="3.6" stroke-linecap="round"/>
+        <circle cx="8" cy="29" r="4" fill="#FF7A2F"/>
+        <circle cx="32" cy="29" r="4" fill="#7BB661"/>
       </svg>
       Neario
     </div>
@@ -615,7 +677,7 @@
   const mt=document.getElementById('mtrack');
   mt.innerHTML+=mt.innerHTML;
 
-  const words=['home bakes','daily tiffin','mango pickle','handmade mugs','fresh flowers'];
+  const words=['birthday hampers','custom cakes','handmade mugs','return gifts','fresh flowers'];
   const typed=document.getElementById('typed');
   let wi=0,ci=words[0].length,dir=-1;
   setInterval(()=>{
@@ -630,6 +692,17 @@
     if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
   }),{threshold:.15,rootMargin:'0px 0px -6% 0px'});
   document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i%4,3)*70)+'ms';io.observe(el);});
+
+  // cycle text on [data-swap] elements (mini app screens)
+  document.querySelectorAll('[data-swap]').forEach(el=>{
+    const items=el.getAttribute('data-swap').split('|');let i=0;
+    el.style.transition='opacity .28s';
+    setInterval(()=>{
+      i=(i+1)%items.length;
+      el.style.opacity=0;
+      setTimeout(()=>{el.textContent=items[i];el.style.opacity=1},280);
+    },2600);
+  });
 
   // close other FAQs when one opens
   document.querySelectorAll('details').forEach(d=>{
